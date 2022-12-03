@@ -143,7 +143,7 @@ namespace LoadBuilder
 
                 if (Items.TryGetValue("8990461600", out var refrigerator))
                 {
-                    refrigerator.IsFullRotationAllowed = false;
+                    refrigerator.IsFullRotationAllowed = true;
                     refrigerator.Quantity = refrigeratorAmount;
                     
                     itemsToPack.Add(refrigerator);

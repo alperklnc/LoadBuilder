@@ -55,7 +55,7 @@ namespace LoadBuilder.Packing.Entities
                 
                 foreach (var packedItem in AlgorithmPackingResults[0].PackedItems)
                 {
-                    var line = $"{packedItem.CoordX} {packedItem.CoordY} {packedItem.CoordZ} {packedItem.Dim1} {packedItem.Dim2} {packedItem.Dim3}";
+                    var line = $"{packedItem.CoordX} {packedItem.CoordY} {packedItem.CoordZ} {packedItem.PackDimX} {packedItem.PackDimY} {packedItem.PackDimZ}";
                     writer.WriteLine(line); 
                 }
             }
