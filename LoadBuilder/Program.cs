@@ -17,6 +17,7 @@ namespace LoadBuilder
         
         private static readonly List<Container> Containers = new();
         private static readonly Dictionary<string, Item> Items = new();
+        private static readonly Dictionary<string, Dictionary<string, string>> LoadingTypes = new();
 
         public static void Main(string[] args)
         {
@@ -31,8 +32,9 @@ namespace LoadBuilder
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             ReadContainerFile();
             ReadItemFile();
+            ReadLoadingTypes();
         }
-        
+
         private static void ReadContainerFile()
         {
             using ExcelPackage xlPackage = new ExcelPackage(new FileInfo($"{_mainPath}/Data/container_dimensions.xlsx"));
@@ -88,6 +90,30 @@ namespace LoadBuilder
                         Items.Add(id, item);
                     }
                 }
+            }
+        }
+        
+        private static void ReadLoadingTypes()
+        {
+            using ExcelPackage xlPackage = new ExcelPackage(new FileInfo($"{_mainPath}/Data/Loading Types.xlsx"));
+            var myWorksheet = xlPackage.Workbook.Worksheets.First();
+            var totalRows = myWorksheet.Dimension.End.Row;
+            var totalColumns = myWorksheet.Dimension.End.Column;
+
+            var items = myWorksheet.Cells[1, 1, 1, totalColumns].Select(c => c.Value == null ? string.Empty : c.Value.ToString()).ToList();
+            
+            for (int i = 2; i <= totalRows; i++)
+            {
+                var row = myWorksheet.Cells[i, 1, i, totalColumns].Select(c => c.Value == null ? string.Empty : c.Value.ToString()).ToList();
+
+                var loadingTypes = new Dictionary<string, string>();
+
+                var country = row[0];
+                for (int j = 1; j < row.Count; j++)
+                {
+                    loadingTypes.Add(items[j], row[j]);
+                }
+                LoadingTypes.Add(country, loadingTypes);
             }
         }
 

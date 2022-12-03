@@ -4,7 +4,17 @@
     <projectFile>LoadBuilder/LoadBuilder.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1192fc19-e96b-4d6a-8715-cd6790208634" name="Changes" comment="" />
+    <list default="true" id="1192fc19-e96b-4d6a-8715-cd6790208634" name="Changes" comment="remove .vs">
+      <change afterPath="$PROJECT_DIR$/LoadBuilder/Packing/Entities/LoadingType.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.LoadBuilder/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LoadBuilder/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LoadBuilder/LoadBuilder.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/LoadBuilder/LoadBuilder.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LoadBuilder/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LoadBuilder/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LoadBuilder/bin/Debug/LoadBuilder.exe" beforeDir="false" afterPath="$PROJECT_DIR$/LoadBuilder/bin/Debug/LoadBuilder.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LoadBuilder/bin/Debug/LoadBuilder.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/LoadBuilder/bin/Debug/LoadBuilder.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LoadBuilder/obj/Debug/LoadBuilder.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/LoadBuilder/obj/Debug/LoadBuilder.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LoadBuilder/obj/Debug/LoadBuilder.exe" beforeDir="false" afterPath="$PROJECT_DIR$/LoadBuilder/obj/Debug/LoadBuilder.exe" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LoadBuilder/obj/Debug/LoadBuilder.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/LoadBuilder/obj/Debug/LoadBuilder.pdb" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -74,6 +84,7 @@
       <workItem from="1669837401041" duration="17236000" />
       <workItem from="1670082012742" duration="885000" />
       <workItem from="1670086451554" duration="721000" />
+      <workItem from="1670087222296" duration="2355000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <created>1670079904869</created>
@@ -103,7 +114,21 @@
       <option name="project" value="LOCAL" />
       <updated>1670086549969</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="initial commit">
+      <created>1670087245693</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1670087245693</updated>
+    </task>
+    <task id="LOCAL-00006" summary="remove .vs">
+      <created>1670087367554</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1670087367554</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -126,7 +151,27 @@
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
     <MESSAGE value="Initial commit" />
     <MESSAGE value="initial commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="initial commit" />
+    <MESSAGE value="remove .vs" />
+    <option name="LAST_COMMIT_MESSAGE" value="remove .vs" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/LoadBuilder/Program.cs</url>
+          <line>35</line>
+          <properties documentPath="$PROJECT_DIR$/LoadBuilder/Program.cs" initialLine="35" containingFunctionPresentation="method 'ReadDataFiles'">
+            <startOffsets>
+              <option value="1059" />
+            </startOffsets>
+            <endOffsets>
+              <option value="1060" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
