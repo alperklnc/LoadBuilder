@@ -9,18 +9,28 @@ import random
 path = sys.argv[1]
 file_name = sys.argv[2]
 
+container = []
 positions = []
 sizes = []
 colors = []
 
-trucks = [
-    [1204, 235, 269]
-]
-truckX = trucks[0][0]
-truckY = trucks[0][1]
-truckZ = trucks[0][2]
-
 file_path = path + "/" + file_name + ".txt"
+with open(file_path) as file:
+    lines = [line.split() for line in file]
+    
+for i in range(len(lines)):
+    line = lines[i]
+    
+    if i == 0:
+        container = [float(line[0]), float(line[1]), float(line[2])]
+    else:
+        position = (float(line[0]), float(line[1]), float(line[2]))
+        positions.append(position)
+    
+        size = (float(line[3]), float(line[4]), float(line[5]))
+        sizes.append(size)
+
+"""   
 with open(file_path) as f:
     for line in f:
         box_info = line.split()
@@ -30,7 +40,7 @@ with open(file_path) as f:
 
         size = (float(box_info[3]), float(box_info[4]), float(box_info[5]))
         sizes.append(size)
-
+"""
 
 def cuboid_data2(o, size=(1, 1, 1)):
     X = [[[0, 1, 0], [0, 0, 0], [1, 0, 0], [1, 1, 0]],
@@ -67,16 +77,16 @@ ax = fig.add_subplot(projection='3d')
 pc = plotCubeAt2(positions, sizes, colors, edgecolor="k")
 ax.add_collection3d(pc)
 
-ax.set_xlim3d([0, truckX])
-ax.set_ylim3d([0, truckY])
-ax.set_zlim3d([0, truckZ])
+ax.set_xlim3d([0, container[0]])
+ax.set_ylim3d([container[1], 0])
+ax.set_zlim3d([0, container[2]])
 
 """                                                                                                                                                    
 Scaling is done from here...                                                                                                                           
 """
-x_scale = truckX
-y_scale = truckY
-z_scale = truckZ
+x_scale = container[0]
+y_scale = container[1]
+z_scale = container[2]
 
 scale = np.diag([x_scale, y_scale, z_scale, 1.0])
 scale = scale * (1.0 / scale.max())

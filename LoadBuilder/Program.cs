@@ -19,6 +19,8 @@ namespace LoadBuilder
         private static readonly Dictionary<string, Item> Items = new();
         private static readonly Dictionary<string, Dictionary<string, string>> LoadingTypes = new();
 
+        private static Container selectedContainer;
+
         public static void Main(string[] args)
         {
             _mainPath = Directory.GetParent(Environment.CurrentDirectory)?.Parent?.ToString();
@@ -129,7 +131,7 @@ namespace LoadBuilder
 
         private static void Solve()
         {
-            var container = Containers[2];
+            selectedContainer = Containers[2];
 
             var itemsToPack = new List<Item>();
             var itemTypeCount = 1;
@@ -147,11 +149,13 @@ namespace LoadBuilder
                     itemsToPack.Add(refrigerator);
                     totalItemAmount += refrigeratorAmount;
                 }
-                
-                Console.WriteLine("MISSING ITEM ID!!!");
+                else
+                {
+                    Console.WriteLine($"MISSING ITEM ID FOR {refrigerator}!!!");
+                }
             }
             
-            var packingResults = PackingService.Pack(container, itemsToPack, new List<int> { (int)AlgorithmType.EB_AFIT });
+            var packingResults = PackingService.Pack(selectedContainer, itemsToPack, new List<int> { (int)AlgorithmType.EB_AFIT });
 
             Console.WriteLine("==================== PACKING RESULT ====================");
             Console.WriteLine($"{totalItemAmount} items with {itemsToPack.Count} different types are packed into {packingResults.Count} Container(s)\n");
@@ -162,7 +166,7 @@ namespace LoadBuilder
 
                 var path = "/Users/alperkilinc/Desktop/KU/INDR491/LoadBuilder/LoadBuilder/Output";
                 var fileName = $"output_{result.AlgorithmPackingResults[0].AlgorithmName}";
-                result.WriteResultsToTxt(path, fileName);
+                result.WriteResultsToTxt(path, fileName, selectedContainer);
                 
                 VisualizeOutput(path, fileName);
             }

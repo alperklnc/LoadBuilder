@@ -46,10 +46,13 @@ namespace LoadBuilder.Packing.Entities
             }
         }
         
-        public void WriteResultsToTxt(string path, string fileName)
+        public void WriteResultsToTxt(string path, string fileName, Container selectedContainer)
         {
-            using (StreamWriter writer = new StreamWriter($"{path}/{fileName}.txt"))  
+            using (StreamWriter writer = new StreamWriter($"{path}/{fileName}.txt"))
             {
+                var containerInfo = $"{selectedContainer.Length} {selectedContainer.Width} {selectedContainer.Height}";
+                writer.WriteLine(containerInfo); 
+                
                 foreach (var packedItem in AlgorithmPackingResults[0].PackedItems)
                 {
                     var line = $"{packedItem.CoordX} {packedItem.CoordY} {packedItem.CoordZ} {packedItem.Dim1} {packedItem.Dim2} {packedItem.Dim3}";
