@@ -85,9 +85,14 @@ namespace LoadBuilder
                     var height = decimal.Parse(row[7]);
 
                     Item item = new Item(i, type, length, width, height);
-                    if (!Items.TryGetValue(id, out var _item))
+
+                    if (!Items.ContainsKey(id))
                     {
                         Items.Add(id, item);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Item {id} is already added to the dictionary!");
                     }
                 }
             }
