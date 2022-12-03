@@ -4,14 +4,11 @@
     <projectFile>LoadBuilder/LoadBuilder.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1192fc19-e96b-4d6a-8715-cd6790208634" name="Changes" comment="">
+    <list default="true" id="1192fc19-e96b-4d6a-8715-cd6790208634" name="Changes" comment="Change container length width values and pass container info to visualizer.">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.LoadBuilder/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LoadBuilder/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LoadBuilder/Data/container_dimensions.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/LoadBuilder/Data/container_dimensions.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LoadBuilder/Helpers/visualizer.py" beforeDir="false" afterPath="$PROJECT_DIR$/LoadBuilder/Helpers/visualizer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LoadBuilder/Output/output_EB-AFIT.png" beforeDir="false" afterPath="$PROJECT_DIR$/LoadBuilder/Output/output_EB-AFIT.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LoadBuilder/Output/output_EB-AFIT.txt" beforeDir="false" afterPath="$PROJECT_DIR$/LoadBuilder/Output/output_EB-AFIT.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LoadBuilder/Packing/Entities/ContainerPackingResult.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LoadBuilder/Packing/Entities/ContainerPackingResult.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LoadBuilder/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LoadBuilder/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LoadBuilder/bin/Debug/LoadBuilder.exe" beforeDir="false" afterPath="$PROJECT_DIR$/LoadBuilder/bin/Debug/LoadBuilder.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LoadBuilder/bin/Debug/LoadBuilder.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/LoadBuilder/bin/Debug/LoadBuilder.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LoadBuilder/obj/Debug/LoadBuilder.exe" beforeDir="false" afterPath="$PROJECT_DIR$/LoadBuilder/obj/Debug/LoadBuilder.exe" afterDir="false" />
@@ -23,10 +20,25 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="HighlightingSettingsPerFile">
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/alperkilinc/Desktop/KU/INDR491/LoadBuilder/LoadBuilder/Packing/Algorithms/EB_AFIT.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/alperkilinc/Desktop/KU/INDR491/LoadBuilder/LoadBuilder/Packing/Algorithms/EB_AFIT.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/alperkilinc/Desktop/KU/INDR491/LoadBuilder/LoadBuilder/Packing/Algorithms/EB_AFIT.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/alperkilinc/Desktop/KU/INDR491/LoadBuilder/LoadBuilder/Packing/Algorithms/EB_AFIT.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/alperkilinc/Desktop/KU/INDR491/LoadBuilder/LoadBuilder/Packing/Entities/ContainerPackingResult.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/alperkilinc/Desktop/KU/INDR491/LoadBuilder/LoadBuilder/Packing/Entities/ContainerPackingResult.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/alperkilinc/Desktop/KU/INDR491/LoadBuilder/LoadBuilder/Packing/Entities/ContainerPackingResult.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/alperkilinc/Desktop/KU/INDR491/LoadBuilder/LoadBuilder/Program.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/alperkilinc/Desktop/KU/INDR491/LoadBuilder/LoadBuilder/Program.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/alperkilinc/Desktop/KU/INDR491/LoadBuilder/LoadBuilder/Program.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/a63e4a6de5a44221be5a35947f932083310200/18/2f41f8d7/ExcelPackage.cs" root0="SKIP_HIGHLIGHTING" />
@@ -93,7 +105,7 @@
       <workItem from="1670082012742" duration="885000" />
       <workItem from="1670086451554" duration="721000" />
       <workItem from="1670087222296" duration="6722000" />
-      <workItem from="1670102931890" duration="1379000" />
+      <workItem from="1670102931890" duration="3465000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <created>1670079904869</created>
@@ -158,7 +170,14 @@
       <option name="project" value="LOCAL" />
       <updated>1670093693471</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Change container length width values and pass container info to visualizer.">
+      <created>1670104603589</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1670104603589</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -185,23 +204,89 @@
     <MESSAGE value="Add loading types." />
     <MESSAGE value="Use ContainsKey to add an item to dictionary." />
     <MESSAGE value="Rename methods appropriately." />
-    <option name="LAST_COMMIT_MESSAGE" value="Rename methods appropriately." />
+    <MESSAGE value="Change container length width values and pass container info to visualizer." />
+    <option name="LAST_COMMIT_MESSAGE" value="Change container length width values and pass container info to visualizer." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs</url>
-          <line>1077</line>
-          <properties documentPath="$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs" initialLine="1078" containingFunctionPresentation="method 'Report'">
+          <line>672</line>
+          <properties documentPath="$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs" initialLine="777" containingFunctionPresentation="method 'PackLayer'">
             <startOffsets>
-              <option value="27219" />
+              <option value="16075" />
             </startOffsets>
             <endOffsets>
-              <option value="27239" />
+              <option value="16088" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="4" />
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs</url>
+          <line>695</line>
+          <properties documentPath="$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs" initialLine="800" containingFunctionPresentation="method 'PackLayer'">
+            <startOffsets>
+              <option value="16494" />
+            </startOffsets>
+            <endOffsets>
+              <option value="16544" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs</url>
+          <line>727</line>
+          <properties documentPath="$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs" initialLine="832" containingFunctionPresentation="method 'PackLayer'">
+            <startOffsets>
+              <option value="17367" />
+            </startOffsets>
+            <endOffsets>
+              <option value="17418" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs</url>
+          <line>784</line>
+          <properties documentPath="$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs" initialLine="889" containingFunctionPresentation="method 'PackLayer'">
+            <startOffsets>
+              <option value="18883" />
+            </startOffsets>
+            <endOffsets>
+              <option value="18934" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs</url>
+          <line>834</line>
+          <properties documentPath="$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs" initialLine="939" containingFunctionPresentation="method 'PackLayer'">
+            <startOffsets>
+              <option value="20258" />
+            </startOffsets>
+            <endOffsets>
+              <option value="20309" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs</url>
+          <line>913</line>
+          <properties documentPath="$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs" initialLine="1018" containingFunctionPresentation="method 'PackLayer'">
+            <startOffsets>
+              <option value="22484" />
+            </startOffsets>
+            <endOffsets>
+              <option value="22535" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="14" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

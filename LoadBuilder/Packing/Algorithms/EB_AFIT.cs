@@ -69,7 +69,6 @@ namespace LoadBuilder.Packing.Algorithms
 
 		private int bboxi;
 		private int bestIteration;
-		private int bestVariant;
 		private int boxi;
 		private int cboxi;
 		private int layerListLen;
@@ -282,102 +281,69 @@ namespace LoadBuilder.Packing.Algorithms
 			int itelayer;
 			int layersIndex;
 			decimal bestVolume = 0.0M;
+			
+			px = container.Length; py = container.Width; pz = container.Height;
 
-			for (int containerOrientationVariant = 1; (containerOrientationVariant <= 6) && !quit; containerOrientationVariant++)
+			layers.Add(new Layer { LayerEval = -1 });
+			ListCanditLayers();
+			layers = layers.OrderBy(l => l.LayerEval).ToList();
+
+			for (layersIndex = 1; (layersIndex <= layerListLen) && !quit; layersIndex++)
 			{
-				switch (containerOrientationVariant)
+				packedVolume = 0.0M;
+				packedy = 0;
+				packing = true;
+				layerThickness = layers[layersIndex].LayerDim;
+				itelayer = layersIndex;
+				remainpy = py;
+				remainpz = pz;
+				packedItemCount = 0;
+
+				for (x = 1; x <= itemsToPackCount; x++)
 				{
-					case 1:
-						px = container.Length; py = container.Height; pz = container.Width;
-						break;
-
-					case 2:
-						px = container.Width; py = container.Height; pz = container.Length;
-						break;
-
-					case 3:
-						px = container.Width; py = container.Length; pz = container.Height;
-						break;
-
-					case 4:
-						px = container.Height; py = container.Length; pz = container.Width;
-						break;
-
-					case 5:
-						px = container.Length; py = container.Width; pz = container.Height;
-						break;
-
-					case 6:
-						px = container.Height; py = container.Width; pz = container.Length;
-						break;
+					itemsToPack[x].IsPacked = false;
 				}
 
-				layers.Add(new Layer { LayerEval = -1 });
-				ListCanditLayers();
-				layers = layers.OrderBy(l => l.LayerEval).ToList();
-
-				for (layersIndex = 1; (layersIndex <= layerListLen) && !quit; layersIndex++)
+				do
 				{
-					packedVolume = 0.0M;
-					packedy = 0;
-					packing = true;
-					layerThickness = layers[layersIndex].LayerDim;
-					itelayer = layersIndex;
-					remainpy = py;
-					remainpz = pz;
-					packedItemCount = 0;
+					layerinlayer = 0;
+					layerDone = false;
 
-					for (x = 1; x <= itemsToPackCount; x++)
-					{
-						itemsToPack[x].IsPacked = false;
-					}
+					PackLayer();
 
-					do
+					packedy += layerThickness;
+					remainpy = py - packedy;
+
+					if (layerinlayer != 0 && !quit)
 					{
-						layerinlayer = 0;
+						prepackedy = packedy;
+						preremainpy = remainpy;
+						remainpy = layerThickness - prelayer;
+						packedy = packedy - layerThickness + prelayer;
+						remainpz = lilz;
+						layerThickness = layerinlayer;
 						layerDone = false;
 
 						PackLayer();
 
-						packedy = packedy + layerThickness;
-						remainpy = py - packedy;
-
-						if (layerinlayer != 0 && !quit)
-						{
-							prepackedy = packedy;
-							preremainpy = remainpy;
-							remainpy = layerThickness - prelayer;
-							packedy = packedy - layerThickness + prelayer;
-							remainpz = lilz;
-							layerThickness = layerinlayer;
-							layerDone = false;
-
-							PackLayer();
-
-							packedy = prepackedy;
-							remainpy = preremainpy;
-							remainpz = pz;
-						}
-
-						FindLayer(remainpy);
-					} while (packing && !quit);
-
-					if ((packedVolume > bestVolume) && !quit)
-					{
-						bestVolume = packedVolume;
-						bestVariant = containerOrientationVariant;
-						bestIteration = itelayer;
+						packedy = prepackedy;
+						remainpy = preremainpy;
+						remainpz = pz;
 					}
 
-					if (hundredPercentPacked) break;
+					FindLayer(remainpy);
+				} while (packing && !quit);
+
+				if ((packedVolume > bestVolume) && !quit)
+				{
+					bestVolume = packedVolume;
+					bestIteration = itelayer;
 				}
 
 				if (hundredPercentPacked) break;
-
-				if ((container.Length == container.Height) && (container.Height == container.Width)) containerOrientationVariant = 6;
-
-				layers = new List<Layer>();
 			}
+
+			layers = new List<Layer>();
 		}
 
 		/// <summary>
@@ -412,18 +378,18 @@ namespace LoadBuilder.Packing.Algorithms
 				
 				if ((itemsToPack[x].Dim1 == itemsToPack[x].Dim3) && (itemsToPack[x].Dim3 == itemsToPack[x].Dim2)) continue;
 
-				if (itemsToPack[x].IsFullRotationAllowed)
-				{
-					AnalyzeBox(hmx, hy, hmy, hz, hmz, itemsToPack[x].Dim1, itemsToPack[x].Dim3, itemsToPack[x].Dim2);
-					AnalyzeBox(hmx, hy, hmy, hz, hmz, itemsToPack[x].Dim2, itemsToPack[x].Dim1, itemsToPack[x].Dim3);
-					AnalyzeBox(hmx, hy, hmy, hz, hmz, itemsToPack[x].Dim2, itemsToPack[x].Dim3, itemsToPack[x].Dim1);
-					AnalyzeBox(hmx, hy, hmy, hz, hmz, itemsToPack[x].Dim3, itemsToPack[x].Dim1, itemsToPack[x].Dim2);
-					AnalyzeBox(hmx, hy, hmy, hz, hmz, itemsToPack[x].Dim3, itemsToPack[x].Dim2, itemsToPack[x].Dim1);
-				}
-				else
-				{
-					AnalyzeBox(hmx, hy, hmy, hz, hmz, itemsToPack[x].Dim2, itemsToPack[x].Dim1, itemsToPack[x].Dim3);
-				}
+				// if (itemsToPack[x].IsFullRotationAllowed)
+				// {
+				// 	AnalyzeBox(hmx, hy, hmy, hz, hmz, itemsToPack[x].Dim1, itemsToPack[x].Dim3, itemsToPack[x].Dim2);
+				// 	AnalyzeBox(hmx, hy, hmy, hz, hmz, itemsToPack[x].Dim2, itemsToPack[x].Dim1, itemsToPack[x].Dim3);
+				// 	AnalyzeBox(hmx, hy, hmy, hz, hmz, itemsToPack[x].Dim2, itemsToPack[x].Dim3, itemsToPack[x].Dim1);
+				// 	AnalyzeBox(hmx, hy, hmy, hz, hmz, itemsToPack[x].Dim3, itemsToPack[x].Dim1, itemsToPack[x].Dim2);
+				// 	AnalyzeBox(hmx, hy, hmy, hz, hmz, itemsToPack[x].Dim3, itemsToPack[x].Dim2, itemsToPack[x].Dim1);
+				// }
+				// else
+				// {
+				// 	AnalyzeBox(hmx, hy, hmy, hz, hmz, itemsToPack[x].Dim2, itemsToPack[x].Dim1, itemsToPack[x].Dim3);
+				// }
 
 				itemsToPack[x].RotationType = GetRotationType(itemsToPack[x]);
 			}
@@ -696,77 +662,6 @@ namespace LoadBuilder.Packing.Algorithms
 		/// </summary>
 		private void OutputBoxList()
 		{
-			decimal packCoordX = 0;
-			decimal packCoordY = 0;
-			decimal packCoordZ = 0;
-            decimal packDimX = 0;
-            decimal packDimY = 0;
-            decimal packDimZ = 0;
-
-			switch (bestVariant)
-			{
-				case 1:
-					packCoordX = itemsToPack[cboxi].CoordX;
-					packCoordY = itemsToPack[cboxi].CoordY;
-					packCoordZ = itemsToPack[cboxi].CoordZ;
-					packDimX = itemsToPack[cboxi].PackDimX;
-					packDimY = itemsToPack[cboxi].PackDimY;
-					packDimZ = itemsToPack[cboxi].PackDimZ;
-					break;
-
-				case 2:
-					packCoordX = itemsToPack[cboxi].CoordZ;
-					packCoordY = itemsToPack[cboxi].CoordY;
-					packCoordZ = itemsToPack[cboxi].CoordX;
-					packDimX = itemsToPack[cboxi].PackDimZ;
-					packDimY = itemsToPack[cboxi].PackDimY;
-					packDimZ = itemsToPack[cboxi].PackDimX;
-					break;
-
-				case 3:
-					packCoordX = itemsToPack[cboxi].CoordY;
-					packCoordY = itemsToPack[cboxi].CoordZ;
-					packCoordZ = itemsToPack[cboxi].CoordX;
-					packDimX = itemsToPack[cboxi].PackDimY;
-					packDimY = itemsToPack[cboxi].PackDimZ;
-					packDimZ = itemsToPack[cboxi].PackDimX;
-					break;
-
-				case 4:
-					packCoordX = itemsToPack[cboxi].CoordY;
-					packCoordY = itemsToPack[cboxi].CoordX;
-					packCoordZ = itemsToPack[cboxi].CoordZ;
-					packDimX = itemsToPack[cboxi].PackDimY;
-					packDimY = itemsToPack[cboxi].PackDimX;
-					packDimZ = itemsToPack[cboxi].PackDimZ;
-					break;
-
-				case 5:
-					packCoordX = itemsToPack[cboxi].CoordX;
-					packCoordY = itemsToPack[cboxi].CoordZ;
-					packCoordZ = itemsToPack[cboxi].CoordY;
-					packDimX = itemsToPack[cboxi].PackDimX;
-					packDimY = itemsToPack[cboxi].PackDimZ;
-					packDimZ = itemsToPack[cboxi].PackDimY;
-					break;
-
-				case 6:
-					packCoordX = itemsToPack[cboxi].CoordZ;
-					packCoordY = itemsToPack[cboxi].CoordX;
-					packCoordZ = itemsToPack[cboxi].CoordY;
-					packDimX = itemsToPack[cboxi].PackDimZ;
-					packDimY = itemsToPack[cboxi].PackDimX;
-					packDimZ = itemsToPack[cboxi].PackDimY;
-					break;
-			}
-
-			itemsToPack[cboxi].CoordX = packCoordX;
-			itemsToPack[cboxi].CoordY = packCoordY;
-			itemsToPack[cboxi].CoordZ = packCoordZ;
-			itemsToPack[cboxi].PackDimX = packDimX;
-			itemsToPack[cboxi].PackDimY = packDimY;
-			itemsToPack[cboxi].PackDimZ = packDimZ;
-
 			itemsPackedInOrder.Add(itemsToPack[cboxi]);
 		}
 
@@ -1074,33 +969,6 @@ namespace LoadBuilder.Packing.Algorithms
 		private void Report(Container container)
 		{
 			quit = false;
-
-			switch (bestVariant)
-			{
-				case 1:
-					px = container.Length; py = container.Height; pz = container.Width;
-					break;
-
-				case 2:
-					px = container.Width; py = container.Height; pz = container.Length;
-					break;
-
-				case 3:
-					px = container.Width; py = container.Length; pz = container.Height;
-					break;
-
-				case 4:
-					px = container.Height; py = container.Length; pz = container.Width;
-					break;
-
-				case 5:
-					px = container.Length; py = container.Width; pz = container.Height;
-					break;
-
-				case 6:
-					px = container.Height; py = container.Width; pz = container.Length;
-					break;
-			}
 
 			packingBest = true;
 
