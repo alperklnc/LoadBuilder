@@ -139,7 +139,7 @@ namespace LoadBuilder
             
             for (int i = 0; i < itemTypeCount; i++)
             {
-                var refrigeratorAmount = 7;
+                var refrigeratorAmount = 64;
 
                 if (Items.TryGetValue("8990461600", out var refrigerator))
                 {
