@@ -32,7 +32,7 @@ namespace LoadBuilder
             ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
             ReadContainerFile();
             ReadItemFile();
-            ReadLoadingTypes();
+            ReadLoadingTypesFile();
         }
 
         private static void ReadContainerFile()
@@ -71,9 +71,14 @@ namespace LoadBuilder
                     var height = decimal.Parse(row[8]);
 
                     Item item = new Item(i, type, length, width, height);
-                    if (!Items.TryGetValue(id, out var _item))
+
+                    if (!Items.ContainsKey(id))
                     {
                         Items.Add(id, item);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Item {id} is already added to the dictionary!");
                     }
                 }
                 else if (row.Count == 8)
@@ -98,7 +103,7 @@ namespace LoadBuilder
             }
         }
         
-        private static void ReadLoadingTypes()
+        private static void ReadLoadingTypesFile()
         {
             using ExcelPackage xlPackage = new ExcelPackage(new FileInfo($"{_mainPath}/Data/Loading Types.xlsx"));
             var myWorksheet = xlPackage.Workbook.Worksheets.First();
