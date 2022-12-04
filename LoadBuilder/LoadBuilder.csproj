@@ -90,6 +90,7 @@
         <Compile Include="Packing\Entities\ContainerPackingResult.cs" />
         <Compile Include="Packing\Entities\Item.cs" />
         <Compile Include="Packing\Entities\LoadingType.cs" />
+        <Compile Include="Packing\Entities\RotationType.cs" />
         <Compile Include="Packing\PackingService.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />

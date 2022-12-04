@@ -30,11 +30,11 @@ namespace LoadBuilder.Packing.Entities
 		
 		public decimal Volume { get; }
 
-		public bool IsFullRotationAllowed { get; set; }
+		public int FinalRotationType { get; set; }
 
-		public int RotationType { get; set; }
+		public RotationType RotationType { get; set; }
 
-		public Item(int id, string type, decimal dim1, decimal dim2, decimal dim3, bool isFullRotationAllowed = true, int quantity = 0)
+		public Item(int id, string type, decimal dim1, decimal dim2, decimal dim3, RotationType rotationType = Entities.RotationType.Full, int quantity = 0)
 		{
 			ID = id;
 			Type = type;
@@ -42,7 +42,7 @@ namespace LoadBuilder.Packing.Entities
 			Dim2 = dim2;
 			Dim3 = dim3;
 			Volume = dim1 * dim2 * dim3;
-			IsFullRotationAllowed = isFullRotationAllowed;
+			this.RotationType = rotationType;
 			Quantity = quantity;
 		}
 	}

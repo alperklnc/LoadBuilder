@@ -35,7 +35,7 @@ namespace LoadBuilder.Packing.Entities
                 {
                     Console.WriteLine($"=== {packedItem.Type}({packedItem.Dim1},{packedItem.Dim2},{packedItem.Dim3}) - " +
                                       $"Position: ({packedItem.CoordX},{packedItem.CoordY},{packedItem.CoordZ}) - " +
-                                      $"Rotation Type: Type {packedItem.RotationType}");
+                                      $"Rotation Type: Type {packedItem.FinalRotationType}");
                 }
             
                 Console.WriteLine("\n========== UNPACKED ITEMS ==========");

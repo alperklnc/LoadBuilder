@@ -378,7 +378,15 @@ namespace LoadBuilder.Packing.Algorithms
 				
 				if ((itemsToPack[x].Dim1 == itemsToPack[x].Dim3) && (itemsToPack[x].Dim3 == itemsToPack[x].Dim2)) continue;
 
-				if (itemsToPack[x].IsFullRotationAllowed)
+				if (itemsToPack[x].RotationType == RotationType.OnlyDefault)
+				{
+					// ignore
+				}
+				else if (itemsToPack[x].RotationType == RotationType.OnlyVertical)
+				{
+					AnalyzeBox(hmx, hy, hmy, hz, hmz, itemsToPack[x].Dim2, itemsToPack[x].Dim1, itemsToPack[x].Dim3); // Type 4
+				}
+				else if (itemsToPack[x].RotationType == RotationType.Full)
 				{
 					if (itemsToPack[x].Type.Contains("Refrigerator") && hmz == pz)
 					{
@@ -393,12 +401,8 @@ namespace LoadBuilder.Packing.Algorithms
 						AnalyzeBox(hmx, hy, hmy, hz, hmz, itemsToPack[x].Dim3, itemsToPack[x].Dim2, itemsToPack[x].Dim1); // Type 2
 					}
 				}
-				else
-				{
-					AnalyzeBox(hmx, hy, hmy, hz, hmz, itemsToPack[x].Dim2, itemsToPack[x].Dim1, itemsToPack[x].Dim3); // Type 4
-				}
 
-				itemsToPack[x].RotationType = GetRotationType(itemsToPack[x]);
+				itemsToPack[x].FinalRotationType = GetRotationType(itemsToPack[x]);
 			}
 		}
 
@@ -542,7 +546,7 @@ namespace LoadBuilder.Packing.Algorithms
 
 			// The original code uses 1-based indexing everywhere. This fake entry is added to the beginning
 			// of the list to make that possible.
-			itemsToPack.Add(new Item(0, "", 0, 0, 0, true,0));
+			itemsToPack.Add(new Item(0, "", 0, 0, 0, RotationType.Full,0));
 
 			layers = new List<Layer>();
 			itemsToPackCount = 0;
@@ -551,14 +555,14 @@ namespace LoadBuilder.Packing.Algorithms
 			{
 				for (int i = 1; i <= item.Quantity; i++)
 				{
-					Item newItem = new Item(item.ID, item.Type, item.Dim1, item.Dim2, item.Dim3, item.IsFullRotationAllowed, item.Quantity);
+					Item newItem = new Item(item.ID, item.Type, item.Dim1, item.Dim2, item.Dim3, item.RotationType, item.Quantity);
 					itemsToPack.Add(newItem);
 				}
 
 				itemsToPackCount += item.Quantity;
 			}
 
-			itemsToPack.Add(new Item(0, "",0, 0, 0, true, 0));
+			itemsToPack.Add(new Item(0, "",0, 0, 0, RotationType.Full, 0));
 
 			totalContainerVolume = container.Length * container.Height * container.Width;
 			totalItemVolume = 0.0M;
@@ -594,9 +598,27 @@ namespace LoadBuilder.Packing.Algorithms
 
 			layerListLen = 0;
 
+
+
 			for (x = 1; x <= itemsToPackCount; x++)
 			{
-				for (y = 1; y <= 3; y++)
+				int yStart = 1;
+				int yEnd = 3;
+
+				// if (itemsToPack[x].OnlyDefaultRotation)
+				// {
+				// 	yStart = 2;
+				// 	yEnd = 2;
+				// }
+				// else if (!itemsToPack[x].IsFullRotationAllowed) // Only vertical
+				// {
+				// 	yStart = 1;
+				// 	yEnd = 2;
+				// }
+				// Only default rotation --> Add only width/y/Dim2 value to the list
+				// Only vertical rotation --> Add length/x/Dim1 and width/y/Dim2 value to the list
+				
+				for (y = yStart; y <= yEnd; y++)
 				{
 					switch (y)
 					{
@@ -650,7 +672,7 @@ namespace LoadBuilder.Packing.Algorithms
 							{
 								dimdif = Math.Abs(exdim - itemsToPack[z].Dim3);
 							}
-							layereval = layereval + dimdif;
+							layereval += dimdif;
 						}
 					}
 

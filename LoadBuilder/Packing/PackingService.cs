@@ -36,7 +36,7 @@ namespace LoadBuilder.Packing
 
 					itemsToPack.ForEach(item =>
 					{
-						items.Add(new Item(item.ID, item.Type, item.Dim1, item.Dim2, item.Dim3, item.IsFullRotationAllowed, item.Quantity));
+						items.Add(new Item(item.ID, item.Type, item.Dim1, item.Dim2, item.Dim3, item.RotationType, item.Quantity));
 					});
 
 					Stopwatch stopwatch = new Stopwatch();
