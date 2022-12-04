@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using LoadBuilder.FileReading;
+using LoadBuilder.Helpers;
 using LoadBuilder.Orders;
 using LoadBuilder.Packing;
 using LoadBuilder.Packing.Algorithms;
@@ -70,36 +70,11 @@ namespace LoadBuilder
             {
                 result.PrintResults(true);
 
-                var path = $"{_mainPath}/Output";
                 var fileName = $"output_{result.AlgorithmPackingResults[0].AlgorithmName}";
-                result.WriteResultsToTxt(path, fileName, _selectedContainer);
+                result.WriteResultsToTxt($"{_mainPath}/Output", fileName, _selectedContainer);
                 
-                VisualizeOutput(path, fileName);
+                Visualizer.VisualizeOutput(_mainPath, fileName);
             }
-        }
-        
-        private static void VisualizeOutput(string path, string fileName)
-        {
-            Process p = new Process();
-            p.StartInfo.FileName = "python3";
-            p.StartInfo.Arguments = $"visualizer.py {path} {fileName}";
-
-            p.StartInfo.RedirectStandardInput = true;
-            
-            p.StartInfo.RedirectStandardError = true;
-            p.StartInfo.RedirectStandardOutput = true;
-            p.StartInfo.CreateNoWindow = true;
-
-            p.StartInfo.WorkingDirectory = $"{_mainPath}/Helpers";
-            p.StartInfo.UseShellExecute = false;
-
-            p.Start();
-            Console.WriteLine("Process StandardOutput");
-            Console.Write(p.StandardOutput.ReadToEnd());
-            Console.WriteLine("Process StandardError");
-            Console.Write(p.StandardError.ReadToEnd());
-            p.WaitForExit();
-            p.Close();
         }
     }
 }

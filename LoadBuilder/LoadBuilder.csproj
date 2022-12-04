@@ -82,6 +82,7 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="FileReading\XlsxReader.cs" />
+        <Compile Include="Helpers\Visualizer.cs" />
         <Compile Include="Orders\Order.cs" />
         <Compile Include="Packing\Algorithms\AlgorithmBase.cs" />
         <Compile Include="Packing\Algorithms\AlgorithmType.cs" />
