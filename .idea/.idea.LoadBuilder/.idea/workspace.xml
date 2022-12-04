@@ -4,9 +4,8 @@
     <projectFile>LoadBuilder/LoadBuilder.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1192fc19-e96b-4d6a-8715-cd6790208634" name="Changes" comment="Update eval value according to item rotation type.">
-      <change afterPath="$PROJECT_DIR$/LoadBuilder/Orders/Order.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.idea.LoadBuilder/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LoadBuilder/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="1192fc19-e96b-4d6a-8715-cd6790208634" name="Changes" comment="Add new Order class.">
+      <change afterPath="$PROJECT_DIR$/LoadBuilder/FileReading/XlsxReader.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LoadBuilder/LoadBuilder.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/LoadBuilder/LoadBuilder.csproj" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LoadBuilder/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LoadBuilder/Program.cs" afterDir="false" />
     </list>
@@ -56,6 +55,7 @@
     <setting file="mock:///Users/alperkilinc/Desktop/KU/INDR491/LoadBuilder/LoadBuilder/Packing/Entities/ContainerPackingResult.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/alperkilinc/Desktop/KU/INDR491/LoadBuilder/LoadBuilder/Packing/Entities/Item.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/alperkilinc/Desktop/KU/INDR491/LoadBuilder/LoadBuilder/Packing/PackingService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/alperkilinc/Desktop/KU/INDR491/LoadBuilder/LoadBuilder/Program.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/alperkilinc/Desktop/KU/INDR491/LoadBuilder/LoadBuilder/Program.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/alperkilinc/Desktop/KU/INDR491/LoadBuilder/LoadBuilder/Program.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/alperkilinc/Desktop/KU/INDR491/LoadBuilder/LoadBuilder/Program.cs" root0="SKIP_HIGHLIGHTING" />
@@ -131,7 +131,7 @@
       <workItem from="1670082012742" duration="885000" />
       <workItem from="1670086451554" duration="721000" />
       <workItem from="1670087222296" duration="6722000" />
-      <workItem from="1670102931890" duration="12956000" />
+      <workItem from="1670102931890" duration="13508000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <created>1670079904869</created>
@@ -238,7 +238,14 @@
       <option name="project" value="LOCAL" />
       <updated>1670152140687</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Add new Order class.">
+      <created>1670153234365</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1670153234365</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -271,7 +278,8 @@
     <MESSAGE value="Add special Refrigerator constraint." />
     <MESSAGE value="Add RotationType enum." />
     <MESSAGE value="Update eval value according to item rotation type." />
-    <option name="LAST_COMMIT_MESSAGE" value="Update eval value according to item rotation type." />
+    <MESSAGE value="Add new Order class." />
+    <option name="LAST_COMMIT_MESSAGE" value="Add new Order class." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

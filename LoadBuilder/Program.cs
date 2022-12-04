@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
+using LoadBuilder.FileReading;
 using LoadBuilder.Orders;
 using LoadBuilder.Packing;
 using LoadBuilder.Packing.Algorithms;
 using LoadBuilder.Packing.Entities;
-using OfficeOpenXml;
 
 namespace LoadBuilder
 {
@@ -15,134 +14,37 @@ namespace LoadBuilder
     {
         private static string _mainPath;
         
-        private static readonly List<Container> Containers = new();
-        private static readonly Dictionary<string, Item> Items = new();
-        private static readonly Dictionary<string, Dictionary<string, string>> LoadingTypes = new();
+        private static List<Container> _containers = new();
+        private static Dictionary<string, Item> _items = new();
+        private static Dictionary<string, Dictionary<string, string>> _loadingTypes = new();
         
-        private static Container selectedContainer;
+        private static Container _selectedContainer;
 
         public static void Main(string[] args)
         {
             _mainPath = Directory.GetParent(Environment.CurrentDirectory)?.Parent?.ToString();
             
-            ReadDataFiles();
-
+            XlsxReader xlsxReader = new XlsxReader(_mainPath);
+            xlsxReader.ReadContainerFile(out _containers);
+            xlsxReader.ReadItemFile(out _items);
+            xlsxReader.ReadLoadingTypesFile(out _loadingTypes);
+            
             OrderInfo order = new OrderInfo();
             order.AddItem("8990461600", 12);
 
             Solve(order);
         }
 
-        private static void ReadDataFiles()
-        {
-            ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-            ReadContainerFile();
-            ReadItemFile();
-            ReadLoadingTypesFile();
-        }
-
-        private static void ReadContainerFile()
-        {
-            using ExcelPackage xlPackage = new ExcelPackage(new FileInfo($"{_mainPath}/Data/container_dimensions.xlsx"));
-            var myWorksheet = xlPackage.Workbook.Worksheets.First();
-            var totalRows = myWorksheet.Dimension.End.Row;
-            var totalColumns = myWorksheet.Dimension.End.Column;
-
-            for (int i = 2; i <= totalRows; i++)
-            {
-                var row = myWorksheet.Cells[i, 1, i, totalColumns].Select(c => c.Value == null ? string.Empty : c.Value.ToString()).ToList();
-                
-                Container container = new Container(i - 1, row[0], decimal.Parse(row[1]), decimal.Parse(row[2]), decimal.Parse(row[3]));
-                Containers.Add(container);
-            }
-        }
-        
-        private static void ReadItemFile()
-        {
-            using ExcelPackage xlPackage = new ExcelPackage(new FileInfo($"{_mainPath}/Data/Book1.xlsx"));
-            var myWorksheet = xlPackage.Workbook.Worksheets.First();
-            var totalRows = myWorksheet.Dimension.End.Row;
-            var totalColumns = myWorksheet.Dimension.End.Column;
-
-            for (int i = 5; i <= totalRows; i++)
-            {
-                var row = myWorksheet.Cells[i, 1, i, totalColumns].Select(c => c.Value == null ? string.Empty : c.Value.ToString()).ToList();
-
-                if (row.Count == 9)
-                {
-                    var id = row[0];
-                    var type = row[3];
-                    var length = decimal.Parse(row[6]);
-                    var width = decimal.Parse(row[7]);
-                    var height = decimal.Parse(row[8]);
-
-                    Item item = new Item(i, type, length, width, height);
-
-                    if (!Items.ContainsKey(id))
-                    {
-                        Items.Add(id, item);
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Item {id} is already added to the dictionary!");
-                    }
-                }
-                else if (row.Count == 8)
-                {
-                    var id = row[0];
-                    var type = row[2];
-                    var length = decimal.Parse(row[5]);
-                    var width = decimal.Parse(row[6]);
-                    var height = decimal.Parse(row[7]);
-
-                    Item item = new Item(i, type, length, width, height);
-
-                    if (!Items.ContainsKey(id))
-                    {
-                        Items.Add(id, item);
-                    }
-                    else
-                    {
-                        Console.WriteLine($"Item {id} is already added to the dictionary!");
-                    }
-                }
-            }
-        }
-        
-        private static void ReadLoadingTypesFile()
-        {
-            using ExcelPackage xlPackage = new ExcelPackage(new FileInfo($"{_mainPath}/Data/Loading Types.xlsx"));
-            var myWorksheet = xlPackage.Workbook.Worksheets.First();
-            var totalRows = myWorksheet.Dimension.End.Row;
-            var totalColumns = myWorksheet.Dimension.End.Column;
-
-            var items = myWorksheet.Cells[1, 1, 1, totalColumns].Select(c => c.Value == null ? string.Empty : c.Value.ToString()).ToList();
-            
-            for (int i = 2; i <= totalRows; i++)
-            {
-                var row = myWorksheet.Cells[i, 1, i, totalColumns].Select(c => c.Value == null ? string.Empty : c.Value.ToString()).ToList();
-
-                var loadingTypes = new Dictionary<string, string>();
-
-                var country = row[0];
-                for (int j = 1; j < row.Count; j++)
-                {
-                    loadingTypes.Add(items[j], row[j]);
-                }
-                LoadingTypes.Add(country, loadingTypes);
-            }
-        }
-
         private static void Solve(OrderInfo order)
         {
-            selectedContainer = Containers[2];
+            _selectedContainer = _containers[2];
 
             var itemsToPack = new List<Item>();
             var totalItemAmount = 0;
 
             foreach (var orderedItem in order.Items)
             {
-                if (Items.TryGetValue(orderedItem.Key, out var item))
+                if (_items.TryGetValue(orderedItem.Key, out var item))
                 {
                     if (order.Country == "")
                     {
@@ -159,7 +61,7 @@ namespace LoadBuilder
                 }
             }
 
-            var packingResults = PackingService.Pack(selectedContainer, itemsToPack, new List<int> { (int)AlgorithmType.EB_AFIT });
+            var packingResults = PackingService.Pack(_selectedContainer, itemsToPack, new List<int> { (int)AlgorithmType.EB_AFIT });
 
             Console.WriteLine("==================== PACKING RESULT ====================");
             Console.WriteLine($"{totalItemAmount} items with {itemsToPack.Count} different types are packed into {packingResults.Count} Container(s)\n");
@@ -168,9 +70,9 @@ namespace LoadBuilder
             {
                 result.PrintResults(true);
 
-                var path = "/Users/alperkilinc/Desktop/KU/INDR491/LoadBuilder/LoadBuilder/Output";
+                var path = $"{_mainPath}/Output";
                 var fileName = $"output_{result.AlgorithmPackingResults[0].AlgorithmName}";
-                result.WriteResultsToTxt(path, fileName, selectedContainer);
+                result.WriteResultsToTxt(path, fileName, _selectedContainer);
                 
                 VisualizeOutput(path, fileName);
             }
