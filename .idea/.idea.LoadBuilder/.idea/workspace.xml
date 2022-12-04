@@ -4,18 +4,11 @@
     <projectFile>LoadBuilder/LoadBuilder.csproj</projectFile>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1192fc19-e96b-4d6a-8715-cd6790208634" name="Changes" comment="Add special Refrigerator constraint.">
-      <change afterPath="$PROJECT_DIR$/LoadBuilder/.idea/.name" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LoadBuilder/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LoadBuilder/Packing/Entities/RotationType.cs" afterDir="false" />
+    <list default="true" id="1192fc19-e96b-4d6a-8715-cd6790208634" name="Changes" comment="Update eval value according to item rotation type.">
+      <change afterPath="$PROJECT_DIR$/LoadBuilder/Orders/Order.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.LoadBuilder/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.LoadBuilder/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LoadBuilder/LoadBuilder.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/LoadBuilder/LoadBuilder.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LoadBuilder/Packing/Entities/ContainerPackingResult.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LoadBuilder/Packing/Entities/ContainerPackingResult.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LoadBuilder/Packing/Entities/Item.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LoadBuilder/Packing/Entities/Item.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LoadBuilder/Packing/PackingService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LoadBuilder/Packing/PackingService.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/LoadBuilder/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/LoadBuilder/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/LoadBuilder/obj/Debug/LoadBuilder.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/LoadBuilder/obj/Debug/LoadBuilder.csproj.CoreCompileInputs.cache" afterDir="false" />
     </list>
     <list id="410debfa-46d1-4333-9921-574c7a63235a" name="Don't Push" comment="">
       <change beforePath="$PROJECT_DIR$/LoadBuilder/Output/output_EB-AFIT.png" beforeDir="false" afterPath="$PROJECT_DIR$/LoadBuilder/Output/output_EB-AFIT.png" afterDir="false" />
@@ -47,6 +40,9 @@
     <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/alperkilinc/Desktop/KU/INDR491/LoadBuilder/LoadBuilder/Packing/Algorithms/EB_AFIT.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/alperkilinc/Desktop/KU/INDR491/LoadBuilder/LoadBuilder/Packing/Algorithms/EB_AFIT.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/alperkilinc/Desktop/KU/INDR491/LoadBuilder/LoadBuilder/Packing/Algorithms/EB_AFIT.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/alperkilinc/Desktop/KU/INDR491/LoadBuilder/LoadBuilder/Packing/Algorithms/EB_AFIT.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/alperkilinc/Desktop/KU/INDR491/LoadBuilder/LoadBuilder/Packing/Algorithms/EB_AFIT.cs" root0="SKIP_HIGHLIGHTING" />
@@ -57,6 +53,11 @@
     <setting file="mock:///Users/alperkilinc/Desktop/KU/INDR491/LoadBuilder/LoadBuilder/Packing/Entities/ContainerPackingResult.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/alperkilinc/Desktop/KU/INDR491/LoadBuilder/LoadBuilder/Packing/Entities/ContainerPackingResult.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/alperkilinc/Desktop/KU/INDR491/LoadBuilder/LoadBuilder/Packing/Entities/ContainerPackingResult.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/alperkilinc/Desktop/KU/INDR491/LoadBuilder/LoadBuilder/Packing/Entities/ContainerPackingResult.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/alperkilinc/Desktop/KU/INDR491/LoadBuilder/LoadBuilder/Packing/Entities/Item.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/alperkilinc/Desktop/KU/INDR491/LoadBuilder/LoadBuilder/Packing/PackingService.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/alperkilinc/Desktop/KU/INDR491/LoadBuilder/LoadBuilder/Program.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Users/alperkilinc/Desktop/KU/INDR491/LoadBuilder/LoadBuilder/Program.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/alperkilinc/Desktop/KU/INDR491/LoadBuilder/LoadBuilder/Program.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/alperkilinc/Desktop/KU/INDR491/LoadBuilder/LoadBuilder/Program.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="mock:///Users/alperkilinc/Desktop/KU/INDR491/LoadBuilder/LoadBuilder/Program.cs" root0="SKIP_HIGHLIGHTING" />
@@ -70,6 +71,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/4442b7245c2daa5293e5756a576152ac77f5f223b92d9cb5d4eaba37a1dca4/Parallel.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/60c82136a77a24f0643426e36c6168a5d785f8952bb3cdc24af49d7b382672/throwhelper.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ac7039813c6fdb3596357aa94233429224bb1a69a4444e1b3839d43eaf9f021/Number.Parsing.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/b180c997a35a218f40b85aeeebe94bb2b1df1155fe6e985867229754041/Decimal.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/b88fc5cbccbb997b67e1efbf3e1ca91fda7c15261117af7f02a53f6aa234ce/List.cs" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
@@ -129,7 +131,7 @@
       <workItem from="1670082012742" duration="885000" />
       <workItem from="1670086451554" duration="721000" />
       <workItem from="1670087222296" duration="6722000" />
-      <workItem from="1670102931890" duration="10400000" />
+      <workItem from="1670102931890" duration="12956000" />
     </task>
     <task id="LOCAL-00001" summary="initial commit">
       <created>1670079904869</created>
@@ -222,7 +224,21 @@
       <option name="project" value="LOCAL" />
       <updated>1670108413919</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="Add RotationType enum.">
+      <created>1670150639198</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1670150639198</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Update eval value according to item rotation type.">
+      <created>1670152140687</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1670152140687</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -253,75 +269,51 @@
     <MESSAGE value="Remove container orientation." />
     <MESSAGE value="Fix passing wrong item dimension to visualizer." />
     <MESSAGE value="Add special Refrigerator constraint." />
-    <option name="LAST_COMMIT_MESSAGE" value="Add special Refrigerator constraint." />
+    <MESSAGE value="Add RotationType enum." />
+    <MESSAGE value="Update eval value according to item rotation type." />
+    <option name="LAST_COMMIT_MESSAGE" value="Update eval value according to item rotation type." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs</url>
-          <line>756</line>
+          <line>770</line>
           <properties documentPath="$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs" initialLine="832" containingFunctionPresentation="method 'PackLayer'">
             <startOffsets>
-              <option value="18253" />
+              <option value="18685" />
             </startOffsets>
             <endOffsets>
-              <option value="18304" />
+              <option value="18736" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="11" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs</url>
-          <line>863</line>
+          <line>877</line>
           <properties documentPath="$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs" initialLine="939" containingFunctionPresentation="method 'PackLayer'">
             <startOffsets>
-              <option value="21144" />
+              <option value="21576" />
             </startOffsets>
             <endOffsets>
-              <option value="21195" />
+              <option value="21627" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs</url>
-          <line>942</line>
+          <line>956</line>
           <properties documentPath="$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs" initialLine="1018" containingFunctionPresentation="method 'PackLayer'">
             <startOffsets>
-              <option value="23370" />
+              <option value="23802" />
             </startOffsets>
             <endOffsets>
-              <option value="23421" />
+              <option value="23853" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="14" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs</url>
-          <line>118</line>
-          <properties documentPath="$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs" initialLine="118" containingFunctionPresentation="method 'AnalyzeBox'">
-            <startOffsets>
-              <option value="2977" />
-            </startOffsets>
-            <endOffsets>
-              <option value="3023" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="21" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs</url>
-          <line>376</line>
-          <properties documentPath="$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs" initialLine="376" containingFunctionPresentation="method 'FindBox'">
-            <startOffsets>
-              <option value="8567" />
-            </startOffsets>
-            <endOffsets>
-              <option value="8674" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="22" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs</url>
@@ -338,29 +330,120 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs</url>
-          <line>603</line>
-          <properties documentPath="$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs" initialLine="597" containingFunctionPresentation="method 'ListCanditLayers'">
-            <startOffsets>
-              <option value="14721" />
-            </startOffsets>
-            <endOffsets>
-              <option value="14722" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="25" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs</url>
-          <line>620</line>
+          <line>634</line>
           <properties documentPath="$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs" initialLine="616" containingFunctionPresentation="method 'ListCanditLayers'">
             <startOffsets>
-              <option value="15162" />
+              <option value="15594" />
             </startOffsets>
             <endOffsets>
-              <option value="15194" />
+              <option value="15626" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="26" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs</url>
+          <line>622</line>
+          <properties documentPath="$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs" initialLine="608" containingFunctionPresentation="method 'ListCanditLayers'">
+            <startOffsets>
+              <option value="15272" />
+            </startOffsets>
+            <endOffsets>
+              <option value="15273" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="27" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs</url>
+          <line>628</line>
+          <properties documentPath="$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs" initialLine="614" containingFunctionPresentation="method 'ListCanditLayers'">
+            <startOffsets>
+              <option value="15461" />
+            </startOffsets>
+            <endOffsets>
+              <option value="15462" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="28" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs</url>
+          <line>695</line>
+          <properties documentPath="$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs" initialLine="681" containingFunctionPresentation="method 'ListCanditLayers'">
+            <startOffsets>
+              <option value="16907" />
+            </startOffsets>
+            <endOffsets>
+              <option value="16950" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="29" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs</url>
+          <line>670</line>
+          <properties documentPath="$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs" initialLine="656" containingFunctionPresentation="method 'ListCanditLayers'">
+            <startOffsets>
+              <option value="16361" />
+            </startOffsets>
+            <endOffsets>
+              <option value="16370" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="30" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs</url>
+          <line>288</line>
+          <properties documentPath="$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs" initialLine="288" containingFunctionPresentation="method 'ExecuteIterations'">
+            <startOffsets>
+              <option value="6634" />
+            </startOffsets>
+            <endOffsets>
+              <option value="6685" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="31" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs</url>
+          <line>295</line>
+          <properties documentPath="$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs" initialLine="295" containingFunctionPresentation="method 'ExecuteIterations'">
+            <startOffsets>
+              <option value="6838" />
+            </startOffsets>
+            <endOffsets>
+              <option value="6884" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="32" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs</url>
+          <line>311</line>
+          <properties documentPath="$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs" initialLine="311" containingFunctionPresentation="method 'ExecuteIterations'">
+            <startOffsets>
+              <option value="7138" />
+            </startOffsets>
+            <endOffsets>
+              <option value="7150" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="33" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs</url>
+          <line>738</line>
+          <properties documentPath="$PROJECT_DIR$/LoadBuilder/Packing/Algorithms/EB_AFIT.cs" initialLine="724" containingFunctionPresentation="method 'PackLayer'">
+            <startOffsets>
+              <option value="17812" />
+            </startOffsets>
+            <endOffsets>
+              <option value="17862" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="35" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

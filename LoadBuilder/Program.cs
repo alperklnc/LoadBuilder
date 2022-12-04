@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
+using LoadBuilder.Orders;
 using LoadBuilder.Packing;
 using LoadBuilder.Packing.Algorithms;
 using LoadBuilder.Packing.Entities;
@@ -18,7 +18,7 @@ namespace LoadBuilder
         private static readonly List<Container> Containers = new();
         private static readonly Dictionary<string, Item> Items = new();
         private static readonly Dictionary<string, Dictionary<string, string>> LoadingTypes = new();
-
+        
         private static Container selectedContainer;
 
         public static void Main(string[] args)
@@ -26,7 +26,11 @@ namespace LoadBuilder
             _mainPath = Directory.GetParent(Environment.CurrentDirectory)?.Parent?.ToString();
             
             ReadDataFiles();
-            Solve();
+
+            OrderInfo order = new OrderInfo();
+            order.AddItem("8990461600", 12);
+
+            Solve(order);
         }
 
         private static void ReadDataFiles()
@@ -129,32 +133,32 @@ namespace LoadBuilder
             }
         }
 
-        private static void Solve()
+        private static void Solve(OrderInfo order)
         {
             selectedContainer = Containers[2];
 
             var itemsToPack = new List<Item>();
-            var itemTypeCount = 1;
             var totalItemAmount = 0;
-            
-            for (int i = 0; i < itemTypeCount; i++)
-            {
-                var refrigeratorAmount = 52;
 
-                if (Items.TryGetValue("8990461600", out var refrigerator))
+            foreach (var orderedItem in order.Items)
+            {
+                if (Items.TryGetValue(orderedItem.Key, out var item))
                 {
-                    refrigerator.RotationType = RotationType.OnlyDefault;
-                    refrigerator.Quantity = refrigeratorAmount;
+                    if (order.Country == "")
+                    {
+                        item.RotationType = RotationType.OnlyDefault;
+                    }
+                    item.Quantity = orderedItem.Value;
                     
-                    itemsToPack.Add(refrigerator);
-                    totalItemAmount += refrigeratorAmount;
+                    itemsToPack.Add(item);
+                    totalItemAmount += orderedItem.Value;
                 }
                 else
                 {
-                    Console.WriteLine($"MISSING ITEM ID FOR {refrigerator}!!!");
+                    Console.WriteLine($"ITEM ID {orderedItem.Key} is not in the dictionary!");
                 }
             }
-            
+
             var packingResults = PackingService.Pack(selectedContainer, itemsToPack, new List<int> { (int)AlgorithmType.EB_AFIT });
 
             Console.WriteLine("==================== PACKING RESULT ====================");
