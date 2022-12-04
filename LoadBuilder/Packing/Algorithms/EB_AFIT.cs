@@ -456,8 +456,24 @@ namespace LoadBuilder.Packing.Algorithms
 			for (x = 1; x <= itemsToPackCount; x++)
 			{
 				if (itemsToPack[x].IsPacked) continue;
+				
+				int yStart = 1;
+				int yEnd = 3;
 
-				for (y = 1; y <= 3; y++)
+				if (itemsToPack[x].RotationType == RotationType.OnlyDefault) 
+				{
+					// Only default rotation --> Add only width/y/Dim2 value to the list
+					yStart = 2;
+					yEnd = 2;
+				}
+				else if (itemsToPack[x].RotationType == RotationType.OnlyVertical)
+				{
+					// Only vertical rotation --> Add length/x/Dim1 and width/y/Dim2 value to the list
+					yStart = 1;
+					yEnd = 2;
+				}
+
+				for (y = yStart; y <= yEnd; y++)
 				{
 					switch (y)
 					{
@@ -597,27 +613,25 @@ namespace LoadBuilder.Packing.Algorithms
 			decimal layereval;
 
 			layerListLen = 0;
-
-
-
+			
 			for (x = 1; x <= itemsToPackCount; x++)
 			{
 				int yStart = 1;
 				int yEnd = 3;
 
-				// if (itemsToPack[x].OnlyDefaultRotation)
-				// {
-				// 	yStart = 2;
-				// 	yEnd = 2;
-				// }
-				// else if (!itemsToPack[x].IsFullRotationAllowed) // Only vertical
-				// {
-				// 	yStart = 1;
-				// 	yEnd = 2;
-				// }
-				// Only default rotation --> Add only width/y/Dim2 value to the list
-				// Only vertical rotation --> Add length/x/Dim1 and width/y/Dim2 value to the list
-				
+				if (itemsToPack[x].RotationType == RotationType.OnlyDefault) 
+				{
+					// Only default rotation --> Add only width/y/Dim2 value to the list
+					yStart = 2;
+					yEnd = 2;
+				}
+				else if (itemsToPack[x].RotationType == RotationType.OnlyVertical)
+				{
+					// Only vertical rotation --> Add length/x/Dim1 and width/y/Dim2 value to the list
+					yStart = 1;
+					yEnd = 2;
+				}
+
 				for (y = yStart; y <= yEnd; y++)
 				{
 					switch (y)
