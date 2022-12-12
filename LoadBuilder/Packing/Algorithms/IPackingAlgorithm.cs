@@ -5,6 +5,6 @@ namespace LoadBuilder.Packing.Algorithms
 {
     public interface IPackingAlgorithm
     {
-        AlgorithmPackingResult Run(Container container, List<Item> items);
+        AlgorithmPackingResult Run(Container container, List<Item> items, bool unloadingWithClamp);
     }
 }

@@ -48,16 +48,21 @@ namespace LoadBuilder.Packing.Entities
         
         public void WriteResultsToTxt(string path, string fileName, Container selectedContainer)
         {
-            using (StreamWriter writer = new StreamWriter($"{path}/{fileName}.txt"))
+            using StreamWriter writer = new StreamWriter($"{path}/{fileName}.txt");
+            var containerInfo = $"{selectedContainer.Length} {selectedContainer.Width} {selectedContainer.Height}";
+            writer.WriteLine(containerInfo); 
+            
+            if (selectedContainer.HasBar())
             {
-                var containerInfo = $"{selectedContainer.Length} {selectedContainer.Width} {selectedContainer.Height}";
-                writer.WriteLine(containerInfo); 
-                
-                foreach (var packedItem in AlgorithmPackingResults[0].PackedItems)
-                {
-                    var line = $"{packedItem.CoordX} {packedItem.CoordY} {packedItem.CoordZ} {packedItem.PackDimX} {packedItem.PackDimY} {packedItem.PackDimZ}";
-                    writer.WriteLine(line); 
-                }
+                var containerBar = selectedContainer.Bar;
+                var containerBarInfo = $"{containerBar.CoordX} {containerBar.CoordY} {containerBar.CoordZ} {containerBar.PackDimX} {containerBar.PackDimY} {containerBar.PackDimZ}";
+                writer.WriteLine(containerBarInfo); 
+            }
+
+            foreach (var packedItem in AlgorithmPackingResults[0].PackedItems)
+            {
+                var line = $"{packedItem.CoordX} {packedItem.CoordY} {packedItem.CoordZ} {packedItem.PackDimX} {packedItem.PackDimY} {packedItem.PackDimZ}";
+                writer.WriteLine(line); 
             }
         }
     }

@@ -14,9 +14,62 @@ namespace LoadBuilder.Packing.Algorithms
         /// </summary>
         /// <param name="container">The container to pack items into.</param>
         /// <param name="items">The items to pack.</param>
+        /// <param name="unloadingWithClamp"></param>
         /// <returns>The bin packing result.</returns>
-        public AlgorithmPackingResult Run(Container container, List<Item> items)
-		{
+        public AlgorithmPackingResult Run(Container container, List<Item> items, bool unloadingWithClamp)
+        {
+	        if (unloadingWithClamp)
+			{
+				var clampedItemGroups = new List<Item>();
+				
+				var item = items[0];
+				Clamp clamp = item.Type.Contains("Refrigerator") ? ClampTypes.Clamp2 : ClampTypes.Clamp1;
+
+				var maxClampingAmountForThisItem = 12;
+				
+				// With Max Amount
+				var clampGroupWithMaxAmount = item.Quantity / maxClampingAmountForThisItem;
+				var dimX = item.Dim1 * 3 + clamp.ArmThickness * 2;
+				var dimY = item.Dim2 * 2;
+				var dimZ = Math.Max(item.Dim3 * 2, clamp.ArmHeight) + clamp.BottomOffset;
+
+				Item clampedItemGroup = new Item(0, "Clamped Item Group", dimX, dimY, dimZ, RotationType.OnlyDefault);
+				clampedItemGroup.Quantity = clampGroupWithMaxAmount;
+				clampedItemGroups.Add(clampedItemGroup);
+				
+				// Remaining Amount
+				var remainingAmount = item.Quantity % maxClampingAmountForThisItem;
+				// Remaining could be 2, 4, 6, or 8
+				if (remainingAmount != 0 && remainingAmount % 2 == 0)
+				{
+					if (remainingAmount == 10)
+					{
+						
+					}
+					else
+					{
+						var xMultiplier = remainingAmount % 6 == 0 ? 3 : 2;
+						var dimXX = item.Dim1 * xMultiplier + clamp.ArmThickness * 2;
+				
+						var yMultiplier = remainingAmount == 2 ? 1 : 2;
+						var dimYY = item.Dim2 * yMultiplier;
+				
+						var zMultiplier = (remainingAmount / 8) + 1;
+						var dimZZ = Math.Max(item.Dim3 * zMultiplier , clamp.ArmHeight) + clamp.BottomOffset;
+						
+						Item itemGroup = new Item(0, "Clamped Item Group", dimXX, dimYY, dimZZ, RotationType.OnlyDefault);
+						itemGroup.Quantity = 1;
+						clampedItemGroups.Add(itemGroup);
+					}
+				}
+
+				items = clampedItemGroups;
+			}
+
+	        // Bar Test
+	        // Item dummyItem = new Item(0,"Dummy", container.Length, container.Width - 130, container.Height, RotationType.OnlyDefault, 1);
+	        // items.Add(dummyItem);
+	        
 			Initialize(container, items);
 			ExecuteIterations(container);
 			Report(container);
@@ -29,15 +82,18 @@ namespace LoadBuilder.Packing.Algorithms
 			{
 				itemsToPack[i].Quantity = 1;
 
+				if (itemsToPack[i].IsBar())
+				{
+					itemsPackedInOrder.Add(itemsToPack[i]);
+				}
+
 				if (!itemsToPack[i].IsPacked)
 				{
 					result.UnpackedItems.Add(itemsToPack[i]);
 				}
 			}
-
-			result.PackedItems = itemsPackedInOrder;
 			
-
+			result.PackedItems = itemsPackedInOrder;
 
 			if (result.UnpackedItems.Count == 0)
 			{
@@ -302,6 +358,11 @@ namespace LoadBuilder.Packing.Algorithms
 				for (x = 1; x <= itemsToPackCount; x++)
 				{
 					itemsToPack[x].IsPacked = false;
+					
+					if (itemsToPack[x].IsBar())
+					{
+						itemsToPack[x].IsPacked = true;
+					}
 				}
 
 				do
@@ -388,7 +449,8 @@ namespace LoadBuilder.Packing.Algorithms
 				}
 				else if (itemsToPack[x].RotationType == RotationType.Full)
 				{
-					if (itemsToPack[x].Type.Contains("Refrigerator") && hmz == pz)
+					if ((itemsToPack[x].Type.Contains("Refrigerator") || itemsToPack[x].Type.Contains("Cooling") || itemsToPack[x].Type.Contains("Freezer"))  
+					    && hmz == pz)
 					{
 						AnalyzeBox(hmx, hy, hmy, hz, hmz, itemsToPack[x].Dim2, itemsToPack[x].Dim1, itemsToPack[x].Dim3); // Type 4
 					}
@@ -566,6 +628,12 @@ namespace LoadBuilder.Packing.Algorithms
 
 			layers = new List<Layer>();
 			itemsToPackCount = 0;
+			
+			if (container.HasBar())
+			{
+				itemsToPack.Add(container.Bar);
+				itemsToPackCount += 1;
+			}
 
 			foreach (Item item in items)
 			{
@@ -1034,6 +1102,11 @@ namespace LoadBuilder.Packing.Algorithms
 			for (x = 1; x <= itemsToPackCount; x++)
 			{
 				itemsToPack[x].IsPacked = false;
+				
+				if (itemsToPack[x].IsBar())
+				{
+					itemsToPack[x].IsPacked = true;
+				}
 			}
 
 			do

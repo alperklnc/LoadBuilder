@@ -89,6 +89,7 @@
         <Compile Include="Packing\Algorithms\EB_AFIT.cs" />
         <Compile Include="Packing\Algorithms\IPackingAlgorithm.cs" />
         <Compile Include="Packing\Entities\AlgorithmPackingResult.cs" />
+        <Compile Include="Packing\Entities\Clamp.cs" />
         <Compile Include="Packing\Entities\Container.cs" />
         <Compile Include="Packing\Entities\ContainerPackingResult.cs" />
         <Compile Include="Packing\Entities\Item.cs" />

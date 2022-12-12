@@ -2,9 +2,9 @@ namespace LoadBuilder.Packing.Entities
 {
     public static class LoadingType
     {
-        private const string FullLoading = "Full Loading";
-        private const string UnloadingWithClamp = "Unloading with Clamp";
-        private const string WithoutHorizontal = "Without Horizontal";
+        public const string FullLoading = "Full Loading";
+        public const string UnloadingWithClamp = "Unloading with Clamp";
+        public const string WithoutHorizontal = "Without Horizontal";
         
         public static bool IsFullLoading(string loadingType)
         {

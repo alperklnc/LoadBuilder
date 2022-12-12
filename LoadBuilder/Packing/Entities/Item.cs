@@ -1,3 +1,5 @@
+using System;
+
 namespace LoadBuilder.Packing.Entities
 {
 	public class Item
@@ -34,7 +36,7 @@ namespace LoadBuilder.Packing.Entities
 
 		public RotationType RotationType { get; set; }
 
-		public Item(int id, string type, decimal dim1, decimal dim2, decimal dim3, RotationType rotationType = Entities.RotationType.Full, int quantity = 0)
+		public Item(int id, string type, decimal dim1, decimal dim2, decimal dim3, RotationType rotationType = RotationType.Full, int quantity = 0)
 		{
 			ID = id;
 			Type = type;
@@ -44,6 +46,30 @@ namespace LoadBuilder.Packing.Entities
 			Volume = dim1 * dim2 * dim3;
 			this.RotationType = rotationType;
 			Quantity = quantity;
+		}
+
+		public void SetRotationType(string rotationType)
+		{
+			switch (rotationType)
+			{
+				case LoadingType.FullLoading:
+					RotationType = RotationType.Full;
+					break;
+				case LoadingType.WithoutHorizontal:
+					RotationType = RotationType.OnlyVertical;
+					break;
+				case LoadingType.UnloadingWithClamp:
+					RotationType = RotationType.OnlyDefault;
+					break;
+				default:
+					Console.WriteLine("Missing Rotation Type");
+					break;
+			}
+		}
+
+		public bool IsBar()
+		{
+			return Type == "Bar";
 		}
 	}
 }

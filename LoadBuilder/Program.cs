@@ -14,12 +14,13 @@ namespace LoadBuilder
     {
         private static string _mainPath;
         
-        private static List<Container> _containers = new();
+        private static Dictionary<string, Container> _containers = new();
         private static Dictionary<string, Item> _items = new();
         private static Dictionary<string, Dictionary<string, string>> _loadingTypes = new();
+        private static Dictionary<string, OrderInfo> _previousOrders = new();
+        private static Dictionary<string, OrderInfo> _newOrders = new();
+        private static Dictionary<string, OrderDetails> _orderDetails = new();
         
-        private static Container _selectedContainer;
-
         public static void Main(string[] args)
         {
             _mainPath = Directory.GetParent(Environment.CurrentDirectory)?.Parent?.ToString();
@@ -28,29 +29,58 @@ namespace LoadBuilder
             xlsxReader.ReadContainerFile(out _containers);
             xlsxReader.ReadItemFile(out _items);
             xlsxReader.ReadLoadingTypesFile(out _loadingTypes);
-            
-            OrderInfo order = new OrderInfo();
-            order.AddItem("8990461600", 12);
+            xlsxReader.ReadTmFile(out _orderDetails);
+            xlsxReader.ReadOrderFile(_orderDetails,out _previousOrders, out _newOrders);
+
+            var mixedOrders = FindMixOrdersIn(_previousOrders);
+            var order = mixedOrders[0];
+
+            var dummyOrder = new OrderInfo();
+            dummyOrder.Country = "ABD";
+            dummyOrder.ContainerType = "40HC";
+            dummyOrder.AddItem("7299341890", 69);
 
             Solve(order);
         }
 
+        private static List<OrderInfo> FindMixOrdersIn(Dictionary<string, OrderInfo> previousOrders)
+        {
+            var previousMixedOrders = new List<OrderInfo>();
+            foreach (var order in previousOrders)
+            {
+                if (order.Value.IsMixOrder)
+                {
+                    previousMixedOrders.Add(order.Value);
+                }
+            }
+
+            return previousMixedOrders;
+        }
+
         private static void Solve(OrderInfo order)
         {
-            _selectedContainer = _containers[2];
-
             var itemsToPack = new List<Item>();
             var totalItemAmount = 0;
 
-            foreach (var orderedItem in order.Items)
+            if (string.IsNullOrEmpty(order.Country))
+            {
+                Console.WriteLine($"Missing country for order {order.DocumentNumber}!");
+                return;
+            }
+            
+            if (string.IsNullOrEmpty(order.ContainerType))
+            {
+                Console.WriteLine($"Missing ContainerType for order {order.DocumentNumber}!");
+                return;
+            }
+
+            foreach (var orderedItem in order.OrderedItems)
             {
                 if (_items.TryGetValue(orderedItem.Key, out var item))
                 {
-                    if (order.Country == "")
-                    {
-                        item.RotationType = RotationType.OnlyDefault;
-                    }
                     item.Quantity = orderedItem.Value;
+                    var loadingType = _loadingTypes[order.Country][item.Type];
+                    item.SetRotationType(loadingType);
                     
                     itemsToPack.Add(item);
                     totalItemAmount += orderedItem.Value;
@@ -58,20 +88,28 @@ namespace LoadBuilder
                 else
                 {
                     Console.WriteLine($"ITEM ID {orderedItem.Key} is not in the dictionary!");
+                    return;
                 }
             }
 
-            var packingResults = PackingService.Pack(_selectedContainer, itemsToPack, new List<int> { (int)AlgorithmType.EB_AFIT });
+            var container = _containers[order.ContainerType];
+            
+            var packingResults = PackingService.Pack(container, itemsToPack, false, new List<int> { (int)AlgorithmType.EB_AFIT });
 
             Console.WriteLine("==================== PACKING RESULT ====================");
-            Console.WriteLine($"{totalItemAmount} items with {itemsToPack.Count} different types are packed into {packingResults.Count} Container(s)\n");
+            Console.WriteLine($"Order Number: {order.DocumentNumber}");
+            Console.WriteLine($"Destination: {order.Country}");
+            Console.WriteLine($"Container: {order.ContainerType}");
+            Console.WriteLine($"Is Already Shipped: {order.IsShipped}");
+            
+            Console.WriteLine($"\n{totalItemAmount} items with {itemsToPack.Count} different types are packed into {packingResults.Count} Container(s)");
             
             foreach (var result in packingResults)
             {
                 result.PrintResults(true);
 
                 var fileName = $"output_{result.AlgorithmPackingResults[0].AlgorithmName}";
-                result.WriteResultsToTxt($"{_mainPath}/Output", fileName, _selectedContainer);
+                result.WriteResultsToTxt($"{_mainPath}/Output", fileName, container);
                 
                 Visualizer.VisualizeOutput(_mainPath, fileName);
             }
