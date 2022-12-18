@@ -33,7 +33,7 @@ namespace LoadBuilder.Packing.Algorithms
 				var dimY = item.Dim2 * 2;
 				var dimZ = Math.Max(item.Dim3 * 2, clamp.ArmHeight) + clamp.BottomOffset;
 
-				Item clampedItemGroup = new Item(0, "Clamped Item Group", dimX, dimY, dimZ, RotationType.OnlyDefault);
+				Item clampedItemGroup = new Item(0, "Clamp", "Clamped Item Group", dimX, dimY, dimZ, RotationType.OnlyDefault);
 				clampedItemGroup.Quantity = clampGroupWithMaxAmount;
 				clampedItemGroups.Add(clampedItemGroup);
 				
@@ -57,7 +57,7 @@ namespace LoadBuilder.Packing.Algorithms
 						var zMultiplier = (remainingAmount / 8) + 1;
 						var dimZZ = Math.Max(item.Dim3 * zMultiplier , clamp.ArmHeight) + clamp.BottomOffset;
 						
-						Item itemGroup = new Item(0, "Clamped Item Group", dimXX, dimYY, dimZZ, RotationType.OnlyDefault);
+						Item itemGroup = new Item(0, "Clamp", "Clamped Item Group", dimXX, dimYY, dimZZ, RotationType.OnlyDefault);
 						itemGroup.Quantity = 1;
 						clampedItemGroups.Add(itemGroup);
 					}
@@ -624,7 +624,7 @@ namespace LoadBuilder.Packing.Algorithms
 
 			// The original code uses 1-based indexing everywhere. This fake entry is added to the beginning
 			// of the list to make that possible.
-			itemsToPack.Add(new Item(0, "", 0, 0, 0, RotationType.Full,0));
+			itemsToPack.Add(new Item(0, "", "", 0, 0, 0, RotationType.Full,0));
 
 			layers = new List<Layer>();
 			itemsToPackCount = 0;
@@ -639,14 +639,14 @@ namespace LoadBuilder.Packing.Algorithms
 			{
 				for (int i = 1; i <= item.Quantity; i++)
 				{
-					Item newItem = new Item(item.ID, item.Type, item.Dim1, item.Dim2, item.Dim3, item.RotationType, item.Quantity);
+					Item newItem = new Item(item.ID, item.ItemId, item.Type, item.Dim1, item.Dim2, item.Dim3, item.RotationType, item.Quantity);
 					itemsToPack.Add(newItem);
 				}
 
 				itemsToPackCount += item.Quantity;
 			}
 
-			itemsToPack.Add(new Item(0, "",0, 0, 0, RotationType.Full, 0));
+			itemsToPack.Add(new Item(0, "","",0, 0, 0, RotationType.Full, 0));
 
 			totalContainerVolume = container.Length * container.Height * container.Width;
 			totalItemVolume = 0.0M;

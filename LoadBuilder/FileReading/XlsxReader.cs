@@ -72,7 +72,7 @@ namespace LoadBuilder.FileReading
                 var width = decimal.Parse(row[3]);
                 var height = decimal.Parse(row[4]);
 
-                Item item = new Item(i, type, length, width, height);
+                Item item = new Item(i, id, type, length, width, height);
 
                 if (!items.ContainsKey(id))
                 {

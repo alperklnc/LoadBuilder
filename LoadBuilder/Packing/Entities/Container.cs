@@ -39,7 +39,7 @@ namespace LoadBuilder.Packing.Entities
 
         private Item CreateContainerBar(int barWidth, int barHeight)
         {
-            var bar = new Item(-1, "Bar", Length, barWidth, barHeight, RotationType.OnlyDefault,1)
+            var bar = new Item(-1, "Bar","Bar", Length, barWidth, barHeight, RotationType.OnlyDefault,1)
             {
                 IsPacked = true,
                 CoordX = 0,

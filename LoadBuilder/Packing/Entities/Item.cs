@@ -36,9 +36,12 @@ namespace LoadBuilder.Packing.Entities
 
 		public RotationType RotationType { get; set; }
 
-		public Item(int id, string type, decimal dim1, decimal dim2, decimal dim3, RotationType rotationType = RotationType.Full, int quantity = 0)
+		public string ItemId { get; set; }
+
+		public Item(int id, string itemId, string type, decimal dim1, decimal dim2, decimal dim3, RotationType rotationType = RotationType.Full, int quantity = 0)
 		{
 			ID = id;
+			ItemId = itemId;
 			Type = type;
 			Dim1 = dim1;
 			Dim2 = dim2;

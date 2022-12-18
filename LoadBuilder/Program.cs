@@ -36,11 +36,11 @@ namespace LoadBuilder
             var order = mixedOrders[0];
 
             var dummyOrder = new OrderInfo();
-            dummyOrder.Country = "ABD";
+            dummyOrder.Country = "Belçika";
             dummyOrder.ContainerType = "40HC";
-            dummyOrder.AddItem("7299341890", 69);
+            dummyOrder.AddItem("6200702000", 12);
 
-            Solve(order);
+            Solve(dummyOrder);
         }
 
         private static List<OrderInfo> FindMixOrdersIn(Dictionary<string, OrderInfo> previousOrders)
@@ -80,6 +80,7 @@ namespace LoadBuilder
                 {
                     item.Quantity = orderedItem.Value;
                     var loadingType = _loadingTypes[order.Country][item.Type];
+                    Console.WriteLine($"Loading Type: {loadingType} for {item.Type} item - ID: {item.ItemId}");
                     item.SetRotationType(loadingType);
                     
                     itemsToPack.Add(item);
@@ -110,7 +111,7 @@ namespace LoadBuilder
             
             foreach (var result in packingResults)
             {
-                result.PrintResults(true);
+                result.PrintResults(false);
 
                 var fileName = $"output_{result.AlgorithmPackingResults[0].AlgorithmName}";
                 result.WriteResultsToTxt($"{_mainPath}/Output", fileName, container);
