@@ -13,6 +13,9 @@ container = []
 positions = []
 sizes = []
 colors = []
+colorList = ["crimson", "limegreen", "g", "c", "m", "y", "coral", "orange", "skyblue", "pink", "purple"]
+itemTypes = []
+itemColorMap = {}
 
 file_path = path + "/" + file_name + ".txt"
 with open(file_path) as file:
@@ -30,17 +33,15 @@ for i in range(len(lines)):
         size = (float(line[3]), float(line[4]), float(line[5]))
         sizes.append(size)
 
-"""   
-with open(file_path) as f:
-    for line in f:
-        box_info = line.split()
+        itemId = line[6]
+        if itemId not in itemColorMap.keys():
+            if len(colorList) > 0:
+                itemColorMap[itemId] = colorList.pop()
+            else:
+                itemColorMap[itemId] = "r"
+        
+        colors.append(itemColorMap[itemId])
 
-        position = (float(box_info[0]), float(box_info[1]), float(box_info[2]))
-        positions.append(position)
-
-        size = (float(box_info[3]), float(box_info[4]), float(box_info[5]))
-        sizes.append(size)
-"""
 
 def cuboid_data2(o, size=(1, 1, 1)):
     X = [[[0, 1, 0], [0, 0, 0], [1, 0, 0], [1, 1, 0]],
@@ -64,12 +65,6 @@ def plotCubeAt2(positions, sizes=None, colors=None, **kwargs):
         g.append(cuboid_data2(p, size=s))
     return Poly3DCollection(np.concatenate(g), facecolors=np.repeat(colors, 6), **kwargs)
 
-
-colorList = ["crimson", "limegreen", "g", "r", "c", "m", "y", "k"]
-
-for i in range(len(positions)):
-    f = random.randint(0, 7)
-    colors.append(colorList[f])
 
 fig = plt.figure(figsize=plt.figaspect(1) * 3)
 ax = fig.add_subplot(projection='3d')

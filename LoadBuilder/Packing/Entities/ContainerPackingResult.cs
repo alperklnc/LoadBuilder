@@ -55,13 +55,13 @@ namespace LoadBuilder.Packing.Entities
             if (selectedContainer.HasBar())
             {
                 var containerBar = selectedContainer.Bar;
-                var containerBarInfo = $"{containerBar.CoordX} {containerBar.CoordY} {containerBar.CoordZ} {containerBar.PackDimX} {containerBar.PackDimY} {containerBar.PackDimZ}";
+                var containerBarInfo = $"{containerBar.CoordX} {containerBar.CoordY} {containerBar.CoordZ} {containerBar.PackDimX} {containerBar.PackDimY} {containerBar.PackDimZ} {containerBar.ItemId}";
                 writer.WriteLine(containerBarInfo); 
             }
 
             foreach (var packedItem in AlgorithmPackingResults[0].PackedItems)
             {
-                var line = $"{packedItem.CoordX} {packedItem.CoordY} {packedItem.CoordZ} {packedItem.PackDimX} {packedItem.PackDimY} {packedItem.PackDimZ}";
+                var line = $"{packedItem.CoordX} {packedItem.CoordY} {packedItem.CoordZ} {packedItem.PackDimX} {packedItem.PackDimY} {packedItem.PackDimZ} {packedItem.ItemId}";
                 writer.WriteLine(line); 
             }
         }
