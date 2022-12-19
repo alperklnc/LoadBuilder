@@ -43,7 +43,7 @@ namespace LoadBuilder.Packing.Algorithms
 				var dimY = item.Dim2 * amountOnY;
 				var dimZ = Math.Max(item.Dim3 * amountOnZ, clamp.ArmHeight);
 
-				Item clampedItemGroup = new Item(0, "Clamp", "Clamped Item Group", dimX, dimY, dimZ, RotationType.OnlyDefault);
+				Item clampedItemGroup = new Item(0, item.ItemId, "Clamped Item Group", dimX, dimY, dimZ, RotationType.OnlyDefault);
 				clampedItemGroup.Quantity = clampGroupWithMaxAmount;
 				clampedItemGroups.Add(clampedItemGroup);
 				
@@ -56,7 +56,7 @@ namespace LoadBuilder.Packing.Algorithms
 					var dimYY = item.Dim2;
 					var dimZZ = Math.Max(item.Dim3 * amountOnZ , clamp.ArmHeight);
 					
-					Item itemGroup = new Item(0, "Clamp", "Clamped Item Group", dimXX, dimYY, dimZZ, RotationType.OnlyDefault, 1);
+					Item itemGroup = new Item(0, item.ItemId, "Clamped Item Group", dimXX, dimYY, dimZZ, RotationType.OnlyDefault, 1);
 					clampedItemGroups.Add(itemGroup);
 				}
 				else
