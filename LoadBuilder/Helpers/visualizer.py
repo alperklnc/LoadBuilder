@@ -4,6 +4,7 @@ from mpl_toolkits.mplot3d import Axes3D
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 import random
 
 path = sys.argv[1]
@@ -96,6 +97,16 @@ ax.get_proj = short_proj
 """                                                                                                                                                    
 to here                                                                                                                                                
 """
+
+legend_patches = []
+for itemId in itemColorMap:
+    print(itemId, itemColorMap[itemId])
+    
+    patch = mpatches.Patch(color=itemColorMap[itemId], label=itemId)
+    legend_patches.append(patch)
+
+plt.legend(handles=legend_patches)
+
 
 png_path = path + "/" + file_name + ".png"
 plt.savefig(png_path, bbox_inches='tight')
