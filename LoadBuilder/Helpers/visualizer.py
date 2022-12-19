@@ -10,6 +10,9 @@ import random
 path = sys.argv[1]
 file_name = sys.argv[2]
 
+orderId = ""
+destination = ""
+containerType = ""
 container = []
 positions = []
 sizes = []
@@ -26,6 +29,10 @@ for i in range(len(lines)):
     line = lines[i]
     
     if i == 0:
+        orderId = line[0]
+        destination = line[1]
+        containerType = line[2]
+    elif i == 1:
         container = [float(line[0]), float(line[1]), float(line[2])]
     else:
         position = (float(line[0]), float(line[1]), float(line[2]))
@@ -37,11 +44,13 @@ for i in range(len(lines)):
         itemId = line[6]
         if itemId not in itemColorMap.keys():
             if len(colorList) > 0:
-                itemColorMap[itemId] = colorList.pop()
+                itemColorMap[itemId] = (colorList.pop(), 0)
             else:
-                itemColorMap[itemId] = "r"
+                itemColorMap[itemId] = ("r", 0)
         
-        colors.append(itemColorMap[itemId])
+        color,amount = itemColorMap[itemId]
+        itemColorMap[itemId] = (color, amount+1)
+        colors.append(color)
 
 
 def cuboid_data2(o, size=(1, 1, 1)):
@@ -99,14 +108,20 @@ to here
 """
 
 legend_patches = []
-for itemId in itemColorMap:
-    print(itemId, itemColorMap[itemId])
-    
-    patch = mpatches.Patch(color=itemColorMap[itemId], label=itemId)
+order_patch = mpatches.Patch(color="black", label=f'Order No: {orderId}')
+legend_patches.append(order_patch)
+destination_patch = mpatches.Patch(color="black", label=f'Destination: {destination}')
+legend_patches.append(destination_patch)
+container_patch = mpatches.Patch(color="black", label=f'Container Type: {containerType}')
+legend_patches.append(container_patch)
+
+for itemId in itemColorMap.keys():
+    color, amount = itemColorMap[itemId]
+    patch = mpatches.Patch(color=color, label=f'SKU: {itemId} - Amount: {amount}')
     legend_patches.append(patch)
 
-plt.legend(handles=legend_patches)
-
+title = f'Packing Result\nOrder: {orderId}\nDestination: {destination}\nContainer Type: {containerType}' 
+leg = plt.legend(handles=legend_patches, title="Packing Result")
 
 png_path = path + "/" + file_name + ".png"
 plt.savefig(png_path, bbox_inches='tight')

@@ -36,6 +36,7 @@ namespace LoadBuilder
             var order = mixedOrders[0];
 
             var dummyOrder = new OrderInfo();
+            dummyOrder.DocumentNumber = "DUMMY";
             dummyOrder.Country = "Danimarka";
             //dummyOrder.Country = "ABD";
             dummyOrder.ContainerType = "40HC";
@@ -50,7 +51,7 @@ namespace LoadBuilder
             // dummyOrder.AddItem("7248846912", 31);
             // dummyOrder.AddItem("7298547681", 1);
 
-            Solve(dummyOrder);
+            Solve(order);
         }
 
         private static List<OrderInfo> FindMixOrdersIn(Dictionary<string, OrderInfo> previousOrders)
@@ -136,7 +137,7 @@ namespace LoadBuilder
                 result.PrintResults(true);
 
                 var fileName = $"output_{result.AlgorithmPackingResults[0].AlgorithmName}";
-                result.WriteResultsToTxt($"{_mainPath}/Output", fileName, container);
+                result.WriteResultsToTxt($"{_mainPath}/Output", order, fileName, container);
                 
                 Visualizer.VisualizeOutput(_mainPath, fileName);
             }

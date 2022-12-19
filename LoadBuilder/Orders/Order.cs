@@ -4,7 +4,7 @@ namespace LoadBuilder.Orders
 {
     public class OrderInfo
     {
-        public string DocumentNumber { get; }
+        public string DocumentNumber { get; set; }
         public string CustomerId { get; }
         public string Country { get; set; }
         public bool IsShipped { get; set; }

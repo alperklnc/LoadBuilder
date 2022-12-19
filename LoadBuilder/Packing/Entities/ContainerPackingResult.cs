@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using LoadBuilder.Orders;
 
 namespace LoadBuilder.Packing.Entities
 {
@@ -46,9 +47,13 @@ namespace LoadBuilder.Packing.Entities
             }
         }
         
-        public void WriteResultsToTxt(string path, string fileName, Container selectedContainer)
+        public void WriteResultsToTxt(string path, OrderInfo order, string fileName, Container selectedContainer)
         {
             using StreamWriter writer = new StreamWriter($"{path}/{fileName}.txt");
+            
+            var orderInfo = $"{order.DocumentNumber} {order.Country} {order.ContainerType}";
+            writer.WriteLine(orderInfo); 
+            
             var containerInfo = $"{selectedContainer.Length} {selectedContainer.Width} {selectedContainer.Height}";
             writer.WriteLine(containerInfo); 
             
