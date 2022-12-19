@@ -39,8 +39,9 @@ namespace LoadBuilder
             dummyOrder.Country = "Danimarka";
             //dummyOrder.Country = "ABD";
             dummyOrder.ContainerType = "40HC";
-            dummyOrder.AddItem("6200702000", 27); //65
+            dummyOrder.AddItem("4410900046", 27); //65
             dummyOrder.AddItem("6203202000", 27); //65
+            //dummyOrder.AddItem("6203202000", 27); //65
             //dummyOrder.AddItem("7305530099", 36); //45
             
             
@@ -90,6 +91,7 @@ namespace LoadBuilder
                 {
                     item.Quantity = orderedItem.Value;
                     var loadingType = _loadingTypes[order.Country][item.Type];
+                    item.LoadingType = loadingType;
                     Console.WriteLine($"Loading Type: {loadingType} for {item.Type} item - ID: {item.ItemId}");
                     item.SetRotationType(loadingType);
 

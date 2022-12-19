@@ -36,9 +36,11 @@ namespace LoadBuilder.Packing.Entities
 
 		public RotationType RotationType { get; set; }
 
+		public string LoadingType { get; set; }
+
 		public string ItemId { get; set; }
 
-		public Item(int id, string itemId, string type, decimal dim1, decimal dim2, decimal dim3, RotationType rotationType = RotationType.Full, int quantity = 0)
+		public Item(int id, string itemId, string type, decimal dim1, decimal dim2, decimal dim3, RotationType rotationType = RotationType.Full, int quantity = 0, string loadingType = "")
 		{
 			ID = id;
 			ItemId = itemId;
@@ -46,6 +48,7 @@ namespace LoadBuilder.Packing.Entities
 			Dim1 = dim1;
 			Dim2 = dim2;
 			Dim3 = dim3;
+			LoadingType = loadingType; 
 			Volume = dim1 * dim2 * dim3;
 			this.RotationType = rotationType;
 			Quantity = quantity;
@@ -55,13 +58,13 @@ namespace LoadBuilder.Packing.Entities
 		{
 			switch (rotationType)
 			{
-				case LoadingType.FullLoading:
+				case Entities.LoadingType.FullLoading:
 					RotationType = RotationType.Full;
 					break;
-				case LoadingType.WithoutHorizontal:
+				case Entities.LoadingType.WithoutHorizontal:
 					RotationType = RotationType.OnlyVertical;
 					break;
-				case LoadingType.UnloadingWithClamp:
+				case Entities.LoadingType.UnloadingWithClamp:
 					RotationType = RotationType.OnlyDefault;
 					break;
 				default:
