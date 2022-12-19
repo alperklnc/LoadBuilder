@@ -45,6 +45,11 @@ namespace LoadBuilder.Packing
 					AlgorithmPackingResult algorithmResult = algorithm.Run(container, items, unloadingWithClamp);
 					stopwatch.Stop();
 
+					if (algorithmResult == null)
+					{
+						return;
+					}
+
 					algorithmResult.PackTimeInMilliseconds = stopwatch.ElapsedMilliseconds;
 
 					decimal containerVolume = container.Length * container.Width * container.Height;

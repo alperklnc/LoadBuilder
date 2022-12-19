@@ -30,15 +30,23 @@ namespace LoadBuilder
             xlsxReader.ReadItemFile(out _items);
             xlsxReader.ReadLoadingTypesFile(out _loadingTypes);
             xlsxReader.ReadTmFile(out _orderDetails);
-            xlsxReader.ReadOrderFile(_orderDetails,out _previousOrders, out _newOrders);
+            xlsxReader.ReadOrderFile(_orderDetails, out _previousOrders, out _newOrders);
 
             var mixedOrders = FindMixOrdersIn(_previousOrders);
             var order = mixedOrders[0];
 
             var dummyOrder = new OrderInfo();
-            dummyOrder.Country = "Belçika";
+            dummyOrder.Country = "Danimarka";
+            //dummyOrder.Country = "ABD";
             dummyOrder.ContainerType = "40HC";
-            dummyOrder.AddItem("6200702000", 12);
+            dummyOrder.AddItem("6200702000", 28); //65
+            //dummyOrder.AddItem("7305530099", 36); //45
+            
+            
+            // dummyOrder.AddItem("7278440517", 27);
+            // dummyOrder.AddItem("7293442884", 1);
+            // dummyOrder.AddItem("7248846912", 31);
+            // dummyOrder.AddItem("7298547681", 1);
 
             Solve(dummyOrder);
         }
@@ -61,6 +69,7 @@ namespace LoadBuilder
         {
             var itemsToPack = new List<Item>();
             var totalItemAmount = 0;
+            var unloadingWithClamp = false;
 
             if (string.IsNullOrEmpty(order.Country))
             {
@@ -82,6 +91,11 @@ namespace LoadBuilder
                     var loadingType = _loadingTypes[order.Country][item.Type];
                     Console.WriteLine($"Loading Type: {loadingType} for {item.Type} item - ID: {item.ItemId}");
                     item.SetRotationType(loadingType);
+
+                    if (LoadingType.IsUnloadingWithClamp(loadingType))
+                    {
+                        unloadingWithClamp = true;
+                    }
                     
                     itemsToPack.Add(item);
                     totalItemAmount += orderedItem.Value;
@@ -95,8 +109,13 @@ namespace LoadBuilder
 
             var container = _containers[order.ContainerType];
             
-            var packingResults = PackingService.Pack(container, itemsToPack, false, new List<int> { (int)AlgorithmType.EB_AFIT });
+            var packingResults = PackingService.Pack(container, itemsToPack, unloadingWithClamp, new List<int> { (int)AlgorithmType.EB_AFIT });
 
+            if (packingResults[0].AlgorithmPackingResults.Count == 0)
+            {
+                return;
+            }
+            
             Console.WriteLine("==================== PACKING RESULT ====================");
             Console.WriteLine($"Order Number: {order.DocumentNumber}");
             Console.WriteLine($"Destination: {order.Country}");
@@ -111,7 +130,7 @@ namespace LoadBuilder
             
             foreach (var result in packingResults)
             {
-                result.PrintResults(false);
+                result.PrintResults(true);
 
                 var fileName = $"output_{result.AlgorithmPackingResults[0].AlgorithmName}";
                 result.WriteResultsToTxt($"{_mainPath}/Output", fileName, container);

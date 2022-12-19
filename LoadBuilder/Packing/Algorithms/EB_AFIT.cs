@@ -20,18 +20,28 @@ namespace LoadBuilder.Packing.Algorithms
         {
 	        if (unloadingWithClamp)
 			{
+				Console.WriteLine("UNLOADING WITH CLAMP");
 				var clampedItemGroups = new List<Item>();
 				
 				var item = items[0];
-				Clamp clamp = item.Type.Contains("Refrigerator") ? ClampTypes.Clamp2 : ClampTypes.Clamp1;
+				//Clamp clamp = item.Type.Contains("Refrigerator") ? ClampTypes.Clamp2 : ClampTypes.Clamp1;
+				Clamp clamp = ClampTypes.Clamp1;
 
-				var maxClampingAmountForThisItem = 12;
+				// Find max clamping amount for this item
+				var amountOnX = Math.Min((int) (container.Length / item.Dim1), (int) (clamp.MaxOpeningLength / item.Dim1));
+				var amountOnZ = (int) (container.Height / item.Dim3);
 				
-				// With Max Amount
+				var amountOnLayer = amountOnX * amountOnZ;
+				var amountOnY = Math.Min(item.Quantity / amountOnLayer, 2);
+				
+				var maxClampingAmountForThisItem = amountOnX * amountOnY * amountOnZ;
+				
+				// How many clamping operation with max clamping amount
 				var clampGroupWithMaxAmount = item.Quantity / maxClampingAmountForThisItem;
-				var dimX = item.Dim1 * 3 + clamp.ArmThickness * 2;
-				var dimY = item.Dim2 * 2;
-				var dimZ = Math.Max(item.Dim3 * 2, clamp.ArmHeight) + clamp.BottomOffset;
+				
+				var dimX = item.Dim1 * amountOnX + clamp.ArmThickness * 2;
+				var dimY = item.Dim2 * amountOnY;
+				var dimZ = Math.Max(item.Dim3 * amountOnZ, clamp.ArmHeight);
 
 				Item clampedItemGroup = new Item(0, "Clamp", "Clamped Item Group", dimX, dimY, dimZ, RotationType.OnlyDefault);
 				clampedItemGroup.Quantity = clampGroupWithMaxAmount;
@@ -39,29 +49,45 @@ namespace LoadBuilder.Packing.Algorithms
 				
 				// Remaining Amount
 				var remainingAmount = item.Quantity % maxClampingAmountForThisItem;
-				// Remaining could be 2, 4, 6, or 8
-				if (remainingAmount != 0 && remainingAmount % 2 == 0)
+
+				if (remainingAmount == amountOnX * amountOnZ)
 				{
-					if (remainingAmount == 10)
-					{
-						
-					}
-					else
-					{
-						var xMultiplier = remainingAmount % 6 == 0 ? 3 : 2;
-						var dimXX = item.Dim1 * xMultiplier + clamp.ArmThickness * 2;
-				
-						var yMultiplier = remainingAmount == 2 ? 1 : 2;
-						var dimYY = item.Dim2 * yMultiplier;
-				
-						var zMultiplier = (remainingAmount / 8) + 1;
-						var dimZZ = Math.Max(item.Dim3 * zMultiplier , clamp.ArmHeight) + clamp.BottomOffset;
-						
-						Item itemGroup = new Item(0, "Clamp", "Clamped Item Group", dimXX, dimYY, dimZZ, RotationType.OnlyDefault);
-						itemGroup.Quantity = 1;
-						clampedItemGroups.Add(itemGroup);
-					}
+					var dimXX = item.Dim1 * amountOnX + clamp.ArmThickness * 2;
+					var dimYY = item.Dim2;
+					var dimZZ = Math.Max(item.Dim3 * amountOnZ , clamp.ArmHeight);
+					
+					Item itemGroup = new Item(0, "Clamp", "Clamped Item Group", dimXX, dimYY, dimZZ, RotationType.OnlyDefault, 1);
+					clampedItemGroups.Add(itemGroup);
 				}
+				else
+				{
+					Console.WriteLine($"Item quantity {item.Quantity} is not valid for clamping. Enter a value in multiples of {amountOnX * amountOnZ}.");
+					return null;
+				}
+
+				// Remaining could be 2, 4, 6, or 8
+				// if (remainingAmount != 0 && remainingAmount % 2 == 0)
+				// {
+				// 	if (remainingAmount == 10)
+				// 	{
+				// 		
+				// 	}
+				// 	else
+				// 	{
+				// 		var xMultiplier = remainingAmount % 6 == 0 ? 3 : 2;
+				// 		var dimXX = item.Dim1 * xMultiplier + clamp.ArmThickness * 2;
+				//
+				// 		var yMultiplier = remainingAmount == 2 ? 1 : 2;
+				// 		var dimYY = item.Dim2 * yMultiplier;
+				//
+				// 		var zMultiplier = (remainingAmount / 8) + 1;
+				// 		var dimZZ = Math.Max(item.Dim3 * zMultiplier , clamp.ArmHeight) + clamp.BottomOffset;
+				// 		
+				// 		Item itemGroup = new Item(0, "Clamp", "Clamped Item Group", dimXX, dimYY, dimZZ, RotationType.OnlyDefault);
+				// 		itemGroup.Quantity = 1;
+				// 		clampedItemGroups.Add(itemGroup);
+				// 	}
+				// }
 
 				items = clampedItemGroups;
 			}
