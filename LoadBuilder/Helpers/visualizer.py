@@ -13,6 +13,7 @@ file_name = sys.argv[2]
 orderId = ""
 destination = ""
 containerType = ""
+utilization = ""
 container = []
 positions = []
 sizes = []
@@ -32,6 +33,7 @@ for i in range(len(lines)):
         orderId = line[0]
         destination = line[1]
         containerType = line[2]
+        utilization = line[3]
     elif i == 1:
         container = [float(line[0]), float(line[1]), float(line[2])]
     else:
@@ -108,20 +110,20 @@ to here
 """
 
 legend_patches = []
-order_patch = mpatches.Patch(color="black", label=f'Order No: {orderId}')
-legend_patches.append(order_patch)
-destination_patch = mpatches.Patch(color="black", label=f'Destination: {destination}')
-legend_patches.append(destination_patch)
-container_patch = mpatches.Patch(color="black", label=f'Container Type: {containerType}')
-legend_patches.append(container_patch)
+# order_patch = mpatches.Patch(color="black", label=f'Order No: {orderId}')
+# legend_patches.append(order_patch)
+# destination_patch = mpatches.Patch(color="black", label=f'Destination: {destination}')
+# legend_patches.append(destination_patch)
+# container_patch = mpatches.Patch(color="black", label=f'Container Type: {containerType}')
+# legend_patches.append(container_patch)
 
 for itemId in itemColorMap.keys():
     color, amount = itemColorMap[itemId]
     patch = mpatches.Patch(color=color, label=f'SKU: {itemId} - Amount: {amount}')
     legend_patches.append(patch)
 
-title = f'Packing Result\nOrder: {orderId}\nDestination: {destination}\nContainer Type: {containerType}' 
-leg = plt.legend(handles=legend_patches, title="Packing Result")
+title = f'Packing Result\nOrder: {orderId}\nDestination: {destination}\nContainer Type: {containerType}\nUtilization: {utilization}%' 
+leg = plt.legend(handles=legend_patches, title=title)
 
 png_path = path + "/" + file_name + ".png"
 plt.savefig(png_path, bbox_inches='tight')

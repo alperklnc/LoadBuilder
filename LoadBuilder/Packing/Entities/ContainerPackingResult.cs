@@ -47,11 +47,11 @@ namespace LoadBuilder.Packing.Entities
             }
         }
         
-        public void WriteResultsToTxt(string path, OrderInfo order, string fileName, Container selectedContainer)
+        public void WriteResultsToTxt(string path, string fileName, AlgorithmPackingResult result, OrderInfo order, Container selectedContainer)
         {
             using StreamWriter writer = new StreamWriter($"{path}/{fileName}.txt");
             
-            var orderInfo = $"{order.DocumentNumber} {order.Country} {order.ContainerType}";
+            var orderInfo = $"{order.DocumentNumber} {order.Country} {order.ContainerType} {result.PercentContainerVolumePacked}";
             writer.WriteLine(orderInfo); 
             
             var containerInfo = $"{selectedContainer.Length} {selectedContainer.Width} {selectedContainer.Height}";

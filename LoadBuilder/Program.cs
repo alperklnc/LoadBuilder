@@ -137,7 +137,7 @@ namespace LoadBuilder
                 result.PrintResults(true);
 
                 var fileName = $"output_{result.AlgorithmPackingResults[0].AlgorithmName}";
-                result.WriteResultsToTxt($"{_mainPath}/Output", order, fileName, container);
+                result.WriteResultsToTxt($"{_mainPath}/Output", fileName, result.AlgorithmPackingResults[0], order, container);
                 
                 Visualizer.VisualizeOutput(_mainPath, fileName);
             }
