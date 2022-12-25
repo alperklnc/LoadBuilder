@@ -73,6 +73,21 @@ namespace LoadBuilder.Packing.Entities
 			}
 		}
 
+		public static RotationType? GetRotationType(string loadingType)
+		{
+			switch (loadingType)
+			{
+				case Entities.LoadingType.FullLoading:
+					return RotationType.Full;
+				case Entities.LoadingType.WithoutHorizontal:
+					return RotationType.OnlyVertical;
+				case Entities.LoadingType.UnloadingWithClamp:
+					return RotationType.OnlyDefault;
+			}
+
+			return null;
+		}
+
 		public bool IsBar()
 		{
 			return Type == "Bar";

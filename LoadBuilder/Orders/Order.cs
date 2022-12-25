@@ -1,4 +1,7 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
+using LoadBuilder.Packing.Entities;
 
 namespace LoadBuilder.Orders
 {
@@ -37,6 +40,35 @@ namespace LoadBuilder.Orders
             else
             {
                 OrderedItems.Add(itemId, itemAmount);
+            }
+        }
+        
+        public void WriteOrderToTxt(string path, string fileName, Container selectedContainer,
+            Dictionary<string, Item> items,
+            Dictionary<string, Dictionary<string, string>> loadingTypes)
+        {
+            using StreamWriter writer = new StreamWriter($"{path}/{fileName}.txt");
+            
+            var orderInfo = $"{DocumentNumber} {Country} {OrderedItems.Count}";
+            writer.WriteLine(orderInfo); 
+            
+            var containerInfo = $"{ContainerType} {selectedContainer.Length} {selectedContainer.Width} {selectedContainer.Height}";
+            writer.WriteLine(containerInfo);
+
+            foreach (var orderedItem in OrderedItems)
+            {
+                var item = items[orderedItem.Key];
+                var rotationType = Item.GetRotationType(loadingTypes[Country][item.Type]);
+                
+                if (rotationType != null)
+                {
+                    var line = $"{orderedItem.Key} {orderedItem.Value} {item.Dim1} {item.Dim2} {item.Dim3} {rotationType}";
+                    writer.WriteLine(line); 
+                }
+                else
+                {
+                    Console.WriteLine("RotationType is missing.");
+                }
             }
         }
     }

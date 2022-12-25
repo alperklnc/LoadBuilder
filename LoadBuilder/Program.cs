@@ -51,6 +51,8 @@ namespace LoadBuilder
             // dummyOrder.AddItem("7248846912", 31);
             // dummyOrder.AddItem("7298547681", 1);
 
+            order.WriteOrderToTxt($"{_mainPath}/Output", "order", _containers[order.ContainerType], _items, _loadingTypes);
+            
             Solve(order);
         }
 
