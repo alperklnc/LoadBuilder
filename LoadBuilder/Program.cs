@@ -131,18 +131,6 @@ namespace LoadBuilder
                 return;
             }
             
-            Console.WriteLine("==================== PACKING RESULT ====================");
-            Console.WriteLine($"Order Number: {order.DocumentNumber}");
-            Console.WriteLine($"Destination: {order.Country}");
-            Console.WriteLine($"Container: {order.ContainerType}");
-            Console.WriteLine($"Is Already Shipped: {order.IsShipped}");
-            foreach (var item in order.OrderedItems)
-            {
-                Console.WriteLine($"Item ID: {item.Key} - Amount: {item.Value}");
-            }
-            
-            Console.WriteLine($"\n{totalItemAmount} items with {itemsToPack.Count} different types are packed into {packingResults.Count} Container(s)");
-            
             var resultCounter = 1;
             foreach (var result in packingResults)
             {
