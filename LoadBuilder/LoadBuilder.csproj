@@ -103,6 +103,9 @@
       <None Include="packages.config" />
     </ItemGroup>
     <ItemGroup>
+      <Content Include="Output\00test.txt" />
+      <Content Include="Packing\Algorithms\bestfit.py" />
+      <Content Include="test.txt" />
       <Content Include="Helpers\fileReader.py" />
       <Content Include="Helpers\main.py" />
       <Content Include="Helpers\visualizer.py" />
