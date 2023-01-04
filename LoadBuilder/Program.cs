@@ -41,7 +41,17 @@ namespace LoadBuilder
 
             if (OrderInfo.IsOrderValid(order))
             {
-                Solve(order);
+                var algorithm = AlgorithmHelper.FindAlgorithm(_items, _loadingTypes, order);
+
+                if (algorithm == AlgorithmType.adaptiveheuristic)
+                {
+                    Solve(order);
+                }
+                else if (algorithm == AlgorithmType.bestfit)
+                {
+                    AlgorithmHelper.RunMethod("bestfit", _mainPath, "order.txt");
+                    Visualizer.VisualizeOutput(_mainPath, "bestfit_output");
+                }
             }
         }
 
@@ -130,7 +140,7 @@ namespace LoadBuilder
             {
                 return;
             }
-            
+
             var resultCounter = 1;
             foreach (var result in packingResults)
             {

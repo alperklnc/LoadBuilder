@@ -88,6 +88,7 @@
         <Compile Include="Packing\Algorithms\AlgorithmType.cs" />
         <Compile Include="Packing\Algorithms\AdaptiveHeuristic.cs" />
         <Compile Include="Packing\Algorithms\IPackingAlgorithm.cs" />
+        <Compile Include="Packing\Algorithms\AlgorithmHelper.cs" />
         <Compile Include="Packing\Entities\AlgorithmPackingResult.cs" />
         <Compile Include="Packing\Entities\Clamp.cs" />
         <Compile Include="Packing\Entities\Container.cs" />
