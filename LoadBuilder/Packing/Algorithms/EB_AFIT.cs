@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using LoadBuilder.Packing.Entities;
 
@@ -12,15 +13,20 @@ namespace LoadBuilder.Packing.Algorithms
         /// <summary>
         /// Runs the packing algorithm.
         /// </summary>
+        /// <param name="orderDocumentNumber"></param>
         /// <param name="container">The container to pack items into.</param>
         /// <param name="items">The items to pack.</param>
         /// <param name="unloadingWithClamp"></param>
+        /// <param name="stopwatch"></param>
         /// <returns>The bin packing result.</returns>
-        public AlgorithmPackingResult Run(Container container, List<Item> items, bool unloadingWithClamp)
+        public AlgorithmPackingResult Run(string orderDocumentNumber, Container container, List<Item> items,
+	        bool unloadingWithClamp, Stopwatch stopwatch)
         {
+	        _orderDocumentNumber = orderDocumentNumber;
+
 	        if (unloadingWithClamp)
 			{
-				Console.WriteLine("UNLOADING WITH CLAMP");
+				//Console.WriteLine("UNLOADING WITH CLAMP");
 				var clampedItemGroups = new List<Item>();
 
 				foreach (var item in items)
@@ -108,7 +114,7 @@ namespace LoadBuilder.Packing.Algorithms
 	        // items.Add(dummyItem);
 	        
 			Initialize(container, items);
-			ExecuteIterations(container);
+			ExecuteIterations(container, stopwatch);
 			Report(container);
 
 			AlgorithmPackingResult result = new AlgorithmPackingResult();
@@ -199,6 +205,7 @@ namespace LoadBuilder.Packing.Algorithms
 		private decimal itemsToPackCount;
 		private decimal totalItemVolume;
 		private decimal totalContainerVolume;
+		private string _orderDocumentNumber;
 
 		#endregion Private Variables
 
@@ -369,7 +376,7 @@ namespace LoadBuilder.Packing.Algorithms
 		/// <summary>
 		/// Executes the packing algorithm variants.
 		/// </summary>
-		private void ExecuteIterations(Container container)
+		private void ExecuteIterations(Container container, Stopwatch stopwatch)
 		{
 			int itelayer;
 			int layersIndex;
@@ -383,6 +390,14 @@ namespace LoadBuilder.Packing.Algorithms
 
 			for (layersIndex = 1; (layersIndex <= layerListLen) && !quit; layersIndex++)
 			{
+				stopwatch.Start();
+				if (stopwatch.ElapsedMilliseconds > 5_000)
+				{
+					Program.TimeOutOrders.Add(_orderDocumentNumber);
+					Console.WriteLine("Time out");
+					return;
+				}
+				
 				packedVolume = 0.0M;
 				packedy = 0;
 				packing = true;

@@ -10,7 +10,8 @@ namespace LoadBuilder.Packing
 {
 	public static class PackingService
 	{
-		public static List<ContainerPackingResult> Pack(Container container, List<Item> itemsToPack, bool unloadingWithClamp,
+		public static List<ContainerPackingResult> Pack(string orderDocumentNumber, Container container,
+			List<Item> itemsToPack, bool unloadingWithClamp,
 			List<int> algorithmTypeIDs)
 		{
 			Object sync = new Object();
@@ -41,8 +42,7 @@ namespace LoadBuilder.Packing
 					});
 
 					Stopwatch stopwatch = new Stopwatch();
-					stopwatch.Start();
-					AlgorithmPackingResult algorithmResult = algorithm.Run(container, items, unloadingWithClamp);
+					AlgorithmPackingResult algorithmResult = algorithm.Run(orderDocumentNumber, container, items, unloadingWithClamp, stopwatch);
 					stopwatch.Stop();
 
 					if (algorithmResult == null)

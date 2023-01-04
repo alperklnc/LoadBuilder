@@ -21,6 +21,8 @@ namespace LoadBuilder
         private static Dictionary<string, OrderInfo> _newOrders = new();
         private static Dictionary<string, OrderDetails> _orderDetails = new();
         
+        public static List<string> TimeOutOrders = new();
+
         public static void Main(string[] args)
         {
             _mainPath = Directory.GetParent(Environment.CurrentDirectory)?.Parent?.ToString();
@@ -56,6 +58,17 @@ namespace LoadBuilder
             Solve(order);
         }
 
+        private static void SolveAllOrders()
+        {
+            var counter = 1;
+            foreach (var _order in _previousOrders)
+            {
+                Console.WriteLine($"{counter} | Solving {_order.Key}");
+                Solve(_order.Value, counter);
+                counter++;
+            }
+        }
+
         private static List<OrderInfo> FindMixOrdersIn(Dictionary<string, OrderInfo> previousOrders)
         {
             var previousMixedOrders = new List<OrderInfo>();
@@ -70,7 +83,7 @@ namespace LoadBuilder
             return previousMixedOrders;
         }
 
-        private static void Solve(OrderInfo order)
+        private static void Solve(OrderInfo order, int counter = 1)
         {
             var itemsToPack = new List<Item>();
             var totalItemAmount = 0;
@@ -115,7 +128,7 @@ namespace LoadBuilder
 
             var container = _containers[order.ContainerType];
             
-            var packingResults = PackingService.Pack(container, itemsToPack, unloadingWithClamp, new List<int> { (int)AlgorithmType.EB_AFIT });
+            var packingResults = PackingService.Pack(order.DocumentNumber, container, itemsToPack, unloadingWithClamp, new List<int> { (int)AlgorithmType.EB_AFIT });
 
             if (packingResults[0].AlgorithmPackingResults.Count == 0)
             {
@@ -134,14 +147,17 @@ namespace LoadBuilder
             
             Console.WriteLine($"\n{totalItemAmount} items with {itemsToPack.Count} different types are packed into {packingResults.Count} Container(s)");
             
+            var resultCounter = 1;
             foreach (var result in packingResults)
             {
-                result.PrintResults(true);
+                result.PrintResults(false);
 
-                var fileName = $"output_{result.AlgorithmPackingResults[0].AlgorithmName}";
+                var fileName = $"{counter}_output_{order.DocumentNumber}_{resultCounter}_{result.AlgorithmPackingResults[0].AlgorithmName}";
                 result.WriteResultsToTxt($"{_mainPath}/Output", fileName, result.AlgorithmPackingResults[0], order, container);
                 
                 Visualizer.VisualizeOutput(_mainPath, fileName);
+
+                resultCounter++;
             }
         }
     }
