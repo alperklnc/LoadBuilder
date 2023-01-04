@@ -83,8 +83,8 @@ namespace LoadBuilder.Packing
 		{
 			switch (algorithmTypeId)
 			{
-				case (int)AlgorithmType.EB_AFIT:
-					return new EB_AFIT();
+				case (int)AlgorithmType.adaptiveheuristic:
+					return new AdaptiveHeuristic();
 
 				default:
 					throw new Exception("Invalid algorithm type.");

@@ -133,7 +133,7 @@ namespace LoadBuilder
 
             var container = _containers[order.ContainerType];
             
-            var packingResults = PackingService.Pack(order.DocumentNumber, container, itemsToPack, unloadingWithClamp, new List<int> { (int)AlgorithmType.EB_AFIT });
+            var packingResults = PackingService.Pack(order.DocumentNumber, container, itemsToPack, unloadingWithClamp, new List<int> { (int)AlgorithmType.adaptiveheuristic });
 
             if (packingResults[0].AlgorithmPackingResults.Count == 0)
             {

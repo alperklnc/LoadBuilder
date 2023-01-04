@@ -6,7 +6,7 @@ using LoadBuilder.Packing.Entities;
 
 namespace LoadBuilder.Packing.Algorithms
 {
-    public class EB_AFIT : IPackingAlgorithm
+    public class AdaptiveHeuristic : IPackingAlgorithm
     {
         #region Public Methods
 
@@ -118,7 +118,7 @@ namespace LoadBuilder.Packing.Algorithms
 			Report(container);
 
 			AlgorithmPackingResult result = new AlgorithmPackingResult();
-			result.AlgorithmId = (int)AlgorithmType.EB_AFIT;
+			result.AlgorithmId = (int)AlgorithmType.adaptiveheuristic;
 			result.AlgorithmName = "EB-AFIT";
 
 			for (int i = 1; i <= itemsToPackCount; i++)
