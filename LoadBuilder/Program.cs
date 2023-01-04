@@ -37,9 +37,17 @@ namespace LoadBuilder
             var mixedOrders = FindMixOrdersIn(_previousOrders);
             var order = mixedOrders[0];
 
+            order.WriteOrderToTxt($"{_mainPath}/Output", "order", _containers[order.ContainerType], _items, _loadingTypes);
+            
+            Solve(order);
+        }
+
+        private static OrderInfo CreateDummyOrder()
+        {
             var dummyOrder = new OrderInfo();
             dummyOrder.DocumentNumber = "DUMMY";
             dummyOrder.Country = "Danimarka";
+            
             //dummyOrder.Country = "ABD";
             dummyOrder.ContainerType = "40HC";
             dummyOrder.AddItem("4410900046", 27); //65
@@ -47,15 +55,12 @@ namespace LoadBuilder
             //dummyOrder.AddItem("6203202000", 27); //65
             //dummyOrder.AddItem("7305530099", 36); //45
             
-            
             // dummyOrder.AddItem("7278440517", 27);
             // dummyOrder.AddItem("7293442884", 1);
             // dummyOrder.AddItem("7248846912", 31);
             // dummyOrder.AddItem("7298547681", 1);
 
-            order.WriteOrderToTxt($"{_mainPath}/Output", "order", _containers[order.ContainerType], _items, _loadingTypes);
-            
-            Solve(order);
+            return dummyOrder;
         }
 
         private static void SolveAllOrders()
