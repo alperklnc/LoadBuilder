@@ -38,8 +38,11 @@ namespace LoadBuilder
             var order = mixedOrders[0];
 
             order.WriteOrderToTxt($"{_mainPath}/Output", "order", _containers[order.ContainerType], _items, _loadingTypes);
-            
-            Solve(order);
+
+            if (OrderInfo.IsOrderValid(order))
+            {
+                Solve(order);
+            }
         }
 
         private static OrderInfo CreateDummyOrder()
@@ -93,18 +96,6 @@ namespace LoadBuilder
             var itemsToPack = new List<Item>();
             var totalItemAmount = 0;
             var unloadingWithClamp = false;
-
-            if (string.IsNullOrEmpty(order.Country))
-            {
-                Console.WriteLine($"Missing country for order {order.DocumentNumber}!");
-                return;
-            }
-            
-            if (string.IsNullOrEmpty(order.ContainerType))
-            {
-                Console.WriteLine($"Missing ContainerType for order {order.DocumentNumber}!");
-                return;
-            }
 
             foreach (var orderedItem in order.OrderedItems)
             {

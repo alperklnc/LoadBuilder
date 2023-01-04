@@ -71,6 +71,23 @@ namespace LoadBuilder.Orders
                 }
             }
         }
+
+        public static bool IsOrderValid(OrderInfo order)
+        {
+            if (string.IsNullOrEmpty(order.Country))
+            {
+                Console.WriteLine($"Missing country for order {order.DocumentNumber}!");
+                return false;
+            }
+            
+            if (string.IsNullOrEmpty(order.ContainerType))
+            {
+                Console.WriteLine($"Missing ContainerType for order {order.DocumentNumber}!");
+                return false;
+            }
+
+            return true;
+        }
     }
 
     public class OrderDetails
