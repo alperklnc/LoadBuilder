@@ -35,7 +35,7 @@ namespace LoadBuilder
             xlsxReader.ReadOrderFile(_orderDetails, out _previousOrders, out _newOrders);
 
             var mixedOrders = FindMixOrdersIn(_previousOrders);
-            var order = mixedOrders[0];
+            var order = mixedOrders[1];
 
             order.WriteOrderToTxt($"{_mainPath}/Output", "order", _containers[order.ContainerType], _items, _loadingTypes);
 
@@ -51,7 +51,12 @@ namespace LoadBuilder
                 {
                     AlgorithmHelper.RunMethod("bestfit", _mainPath, "order.txt");
                     Visualizer.VisualizeOutput(_mainPath, "bestfit_output");
-                }
+                } 
+                else if (algorithm == AlgorithmType.genetic)
+                {
+                    AlgorithmHelper.RunMethod("genetic", _mainPath, "order.txt");
+                    Visualizer.VisualizeOutput(_mainPath, "genetic_output");
+                }  
             }
         }
 

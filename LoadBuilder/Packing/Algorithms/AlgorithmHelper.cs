@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using LoadBuilder.Orders;
 using LoadBuilder.Packing.Entities;
 
@@ -10,25 +11,27 @@ namespace LoadBuilder.Packing.Algorithms
     {
         public static AlgorithmType FindAlgorithm(Dictionary<string, Item> items, Dictionary<string, Dictionary<string, string>> loadingTypes, OrderInfo order)
         {
+            var itemTypes = new List<string>();
+            
             foreach (var orderedItem in order.OrderedItems)
             {
-                if (items.TryGetValue(orderedItem.Key, out var item))
+                if (!items.TryGetValue(orderedItem.Key, out var item)) continue;
+                
+                itemTypes.Add(item.Type);
+                    
+                var loadingType = loadingTypes[order.Country][item.Type];
+                if (LoadingType.IsUnloadingWithClamp(loadingType))
                 {
-                    var loadingType = loadingTypes[order.Country][item.Type];
-
-                    if (LoadingType.IsUnloadingWithClamp(loadingType))
-                    {
-                        return AlgorithmType.adaptiveheuristic;
-                    }
+                    return AlgorithmType.adaptiveheuristic;
                 }
             }
 
-            if (order.OrderedItems.Count > 4)
+            if (order.OrderedItems.Count < 4)
             {
-                return AlgorithmType.adaptiveheuristic;
+                return itemTypes.All(n => n == itemTypes[0]) ? AlgorithmType.genetic : AlgorithmType.bestfit;
             }
             
-            return AlgorithmType.bestfit;
+            return AlgorithmType.adaptiveheuristic;
         }
         
         public static void RunMethod(string method, string path, string fileName)

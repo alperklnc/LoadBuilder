@@ -3,6 +3,7 @@ namespace LoadBuilder.Packing.Algorithms
     public enum AlgorithmType
     {
         adaptiveheuristic = 1,
-        bestfit = 2
+        bestfit = 2,
+        genetic = 3
     }
 }
