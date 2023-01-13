@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using LoadBuilder.Orders;
 
 namespace LoadBuilder.Packing.Entities
@@ -47,7 +48,8 @@ namespace LoadBuilder.Packing.Entities
             }
         }
         
-        public void WriteResultsToTxt(string path, string fileName, AlgorithmPackingResult result, OrderInfo order, Container selectedContainer)
+        public void WriteResultsToTxt(string path, string fileName, AlgorithmPackingResult result, OrderInfo order,
+            Container selectedContainer, Dictionary<string, int> possibleItemAmounts)
         {
             using StreamWriter writer = new StreamWriter($"{path}/{fileName}.txt");
             
@@ -66,9 +68,46 @@ namespace LoadBuilder.Packing.Entities
 
             foreach (var packedItem in AlgorithmPackingResults[0].PackedItems)
             {
+                var possibleAmount = 0;
+                possibleItemAmounts?.TryGetValue(packedItem.ItemId, out possibleAmount);
+                
                 var line = $"{packedItem.CoordX} {packedItem.CoordY} {packedItem.CoordZ} {packedItem.PackDimX} {packedItem.PackDimY} {packedItem.PackDimZ} {packedItem.ItemId}";
                 writer.WriteLine(line); 
             }
+        }
+
+        public Dictionary<string, int> CalculatePossibleItemAmountsForRemainingContainerVolume(Container container)
+        {
+            var possibleItemAmounts = new Dictionary<string, int>();
+            
+            var result = AlgorithmPackingResults[0];
+            var remainingContainerVolume = container.Volume - result.PackedItems.Sum(i => i.Volume);
+            var uniqueItems = GetUniqueItemVolumes(result.PackedItems);
+
+            foreach (var item in uniqueItems)
+            {
+                var possibleItemAmount = (int) (remainingContainerVolume / item.Value);
+                possibleItemAmounts.Add(item.Key, possibleItemAmount);
+            }
+
+            return possibleItemAmounts;
+        }
+
+        private Dictionary<string, decimal> GetUniqueItemVolumes(List<Item> packedItems)
+        {
+            var uniqueItemTypes = new Dictionary<string, decimal>();
+
+            foreach (var packedItem in packedItems)
+            {
+                if (uniqueItemTypes.ContainsKey(packedItem.ItemId))
+                {
+                    continue;
+                }
+                
+                uniqueItemTypes.Add(packedItem.ItemId, packedItem.Volume);
+            }
+            
+            return uniqueItemTypes;
         }
     }
 }

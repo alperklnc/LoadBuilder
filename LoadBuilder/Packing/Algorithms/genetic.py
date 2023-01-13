@@ -16,14 +16,6 @@ def set_to_decimal(value, number_of_decimals):
     return Decimal(value).quantize(number_of_decimals)
 
 def rect_intersect(item1, item2, x, y):
-    """Estimate whether two items get intersection in one dimension.
-    Args:
-        item1, item2: any two items in item list.
-        x,y: Axis.LENGTH/ Axis.Height/ Axis.WIDTH.
-    Returns:
-        Boolean variable: False when two items get intersection in one dimension; True when two items do not intersect in one dimension.
-    """
-    
     d1 = item1.get_dimension() 
     d2 = item2.get_dimension() 
     
@@ -38,26 +30,12 @@ def rect_intersect(item1, item2, x, y):
     return ix < (d1[x] + d2[x])/2 and iy < (d1[y] + d2[y])/2 
 
 def intersect(item1, item2):
-    """Estimate whether two items get intersection in 3D dimension.
-    Args:
-        item1, item2: any two items in item list.
-    Returns:
-        Boolean variable: False when two items get intersection; True when two items do not intersect.
-    """
-    
     return ( 
     rect_intersect(item1, item2, Axis.LENGTH, Axis.HEIGHT) and # xz dimension
     rect_intersect(item1, item2, Axis.HEIGHT, Axis.WIDTH) and # yz dimension
     rect_intersect(item1, item2, Axis.LENGTH, Axis.WIDTH)) # xy dimension
     
 def stack(item1, item2):
-    """Stack two items with same length, width, height or any two of three sides are same.
-    Args:
-        item1, item2: any two items in item list.
-    Return:
-        item1/ stacked_item_list/ stacked_item.
-    """
-    
     if (
         item1.length == item2.length and
         item1.width == item2.width and
@@ -182,14 +160,6 @@ class Bin:
         return set_to_decimal(total_filling_ratio, self.number_of_decimals)
     
     def can_hold_item_with_rotation(self, item, pivot): 
-        """Evaluate whether one item can be placed into bin with all optional orientations.
-        Args:
-            item: any item in item list.
-            pivot: an (x, y, z) coordinate, the back-lower-left corner of the item will be placed at the pivot.
-        Returns:
-            a list containing all optional orientations. If not, return an empty list.
-        """
-        
         fit = False 
         valid_item_position = [0, 0, 0]
         item.position = pivot 
@@ -235,15 +205,6 @@ class Bin:
         return rotation_type_list 
 
     def put_item(self, item, pivot, distance_3d): 
-        """Evaluate whether an item can be placed into a certain bin with which orientation. If yes, perform put action.
-        Args:
-            item: any item in item list.
-            pivot: an (x, y, z) coordinate, the back-lower-left corner of the item will be placed at the pivot.
-            distance_3d: a 3D parameter to determine which orientation should be chosen.
-        Returns:
-            Boolean variable: False when an item couldn't be placed into the bin; True when an item could be placed and perform put action.
-        """
-        
         fit = False 
         rotation_type_list = self.can_hold_item_with_rotation(item, pivot)
         margins_3d_list = []
@@ -438,26 +399,11 @@ class Packer:
     def add_bin(self, bin):
         return self.bins.append(bin)
     
-    def add_item(self, item): 
-        """Add unplaced items into bin's unplaced_items list.
-        Args:
-            item: an unplaced item.
-        Returns:
-            The unplaced item is added into bin's unplaced_items list."""
-        
+    def add_item(self, item):         
         self.total_items += 1
         return self.unplaced_items.append(item) 
     
     def pivot_dict(self, bin, item):
-        """For each item to be placed into a certain bin, obtain a corresponding comparison parameter of each optional pivot that the item can be placed.
-        Args:
-            bin: a bin in bin list that a certain item will be placed into.
-            item: an unplaced item in item list.
-        Returns:
-            a pivot_dict contain all optional pivot point and their comparison parameter of the item.
-            a empty dict may be returned if the item couldn't be placed into the bin.
-        """
-        
         pivot_dict = {}
         can_put = False
         
@@ -679,14 +625,6 @@ class Packer:
         return pivot_dict
     
     def pivot_list(self, bin, item):
-        """Obtain all optional pivot points that one item could be placed into a certain bin.
-        Args:
-            bin: a bin in bin list that a certain item will be placed into.
-            item: an unplaced item in item list.
-        Returns:
-            a pivot_list containing all optional pivot points that the item could be placed into a certain bin.
-        """
-        
         pivot_list = [] 
         
         for axis in range(0, 3): 
@@ -712,14 +650,6 @@ class Packer:
         return pivot_list 
     
     def choose_pivot_point(self, bin, item):
-        """Choose the optimal one from all optional pivot points of the item after comparison.
-        Args:
-            bin: a bin in bin list that a certain item will be placed into.
-            item: an unplaced item in item list.
-        Returns:
-            the optimal pivot point that a item could be placed into a bin.
-        """
-        
         can_put = False
         pivot_available = []
         pivot_available_temp = []
@@ -802,13 +732,6 @@ class Packer:
             return can_put
         
     def pack_to_bin(self, bin, item): 
-        """For each item and each bin, perform whole pack process with optimal orientation and pivot point.
-        Args:
-            bin: a bin in bin list that a certain item will be placed into.
-            item: an unplaced item in item list.
-        Returns: return value is void.
-        """
-        
         if not bin.items:
             response = bin.put_item(item, START_POSITION, [bin.length, bin.width, bin.height])
             
@@ -831,15 +754,7 @@ class Packer:
             
     def pack(
         self, bigger_first=True, number_of_decimals=DEFAULT_NUMBER_OF_DECIMALS):
-        """For a list of items and a list of bins, perform the whole pack process.
-        Args:
-            bin: a bin in bin list that a certain item will be placed into.
-            item: an unplaced item in item list.
-        Returns:
-            For each bin, print detailed information about placed and unplaced items.
-            Then, print the optimal bin with highest packing rate.
-        """
-        
+
         for bin in self.bins:
             bin.format_numbers(number_of_decimals)
             
@@ -980,7 +895,6 @@ for line in lines:
         boxes_ordered.append(Box_Info(i_d, amount, x, y, z, rotation_type))
         
         
-        
 packer = Packer()
 container_1 = Bin(containers[0].get_container_name(),containers[0].get_x(),containers[0].get_y(),containers[0].get_z(),9999)
 packer.add_bin(container_1)
@@ -990,14 +904,17 @@ for item in boxes_ordered:
         packer.add_item(Item('item',item.get_x(),item.get_y(), item.get_z(), 1 , item.get_rotation_type(),item.get_i_d()))
         
 
-    
 packer.pack()   
 
 with open(path + '/genetic_output.txt', 'w') as file:
-    file.write(f"{order[0].get_order_id()} {order[0].get_country_name()} {container_1.get_size()} {packer.get_utilization()}")
+    #file.write(f"{order[0].get_order_id()} {order[0].get_country_name()} {container_1.get_size()} {packer.get_utilization()}")
+    file.write(f"{order[0].get_order_id()} {order[0].get_country_name()} {container_1.get_size()} {50}")
     file.write(f"\n{container_1.get_lenght_bin()} {container_1.get_width_bin()} {container_1.get_height_bin()}")
+    #file.write(f"\n{container_1.get_width_bin()} {container_1.get_height_bin()} {container_1.get_depth_bin()}")
   
     for item in packer.get_placed_items():
-        file.write(f"\n{item.get_position()} {item.get_lenght_item()} {item.get_width_item()} {item.get_height_item()} {item.get_item_id()}  ")
+        dimensions=item.get_dimension()
+        file.write(f"\n{item.get_position()} {dimensions[0]} {dimensions[2]} {dimensions[1]} {item.get_item_id()}")
+        #file.write(f"\n{item.get_position()[0]} {item.get_position()[1]} {item.get_position()[2]} {dimensions[0]} {dimensions[1]} {dimensions[2]} {item.get_item_id()}")
 
-file.close()        
+file.close()

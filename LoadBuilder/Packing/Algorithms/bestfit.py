@@ -174,6 +174,16 @@ class Bin:
             total_weight += item.weight
 
         return set_to_decimal(total_weight, self.number_of_decimals)
+    
+    def get_filling_ratio(self):
+        total_filling_volume = 0
+        total_filling_ratio = 0
+        
+        for item in self.items:
+            total_filling_volume += item.get_volume()
+            
+        total_filling_ratio = total_filling_volume / self.get_volume()
+        return set_to_decimal(total_filling_ratio, self.number_of_decimals)
 
     def put_item(self, item, pivot):
         fit = False
@@ -290,7 +300,7 @@ class Packer:
             bin.unfitted_items.append(item)
 
     def pack(
-        self, bigger_first=False, distribute_items=False,
+        self, bigger_first=True, distribute_items=False,
         number_of_decimals=DEFAULT_NUMBER_OF_DECIMALS
     ):
         for bin in self.bins:
@@ -305,7 +315,9 @@ class Packer:
         self.items.sort(
             key=lambda item: item.get_volume(), reverse=bigger_first
         )
-
+        
+        filling_ratio_list = []
+        
         for bin in self.bins:
             for item in self.items:
                 self.pack_to_bin(bin, item)
@@ -314,7 +326,18 @@ class Packer:
             if distribute_items:
                 for item in bin.items:
                     self.items.remove(item)
+                     
+            filling_ratio_list.append(bin.get_filling_ratio())
+            
+        max_filling_ratio = max(filling_ratio_list)
+        self.utilization = max_filling_ratio
+        
 
+        for bin in self.bins:
+            if bin.get_filling_ratio() == max_filling_ratio: 
+                for item in bin.items:
+                    self.placed_items.append(item)                
+                
 class Order_Info:
     def __init__(self, order_id, country_name, item_types):
         self.order_id = order_id
@@ -429,12 +452,13 @@ for item in boxes_ordered:
         packer.add_item(Item('item',item.get_x(),item.get_y(), item.get_z(), 1.0 , item.get_rotation_type(),item.get_i_d()))
         
 packer.pack()           
-    
+
 with open(path + '/bestfit_output.txt', 'w') as file:
-    file.write(f"{order[0].get_order_id()} {order[0].get_country_name()} {container_1.get_name()} {packer.get_utilization()}")
-    file.write(f"\n{container_1.get_depth_bin()} {container_1.get_width_bin()} {container_1.get_height_bin()}")
+    file.write(f"{order[0].get_order_id()} {order[0].get_country_name()} {container_1.get_name()} {packer.get_utilization()*100}")
+    file.write(f"\n{container_1.get_width_bin()} {container_1.get_height_bin()} {container_1.get_depth_bin()}")
 
     for item in packer.bins[0].items:
-        file.write(f"\n{item.get_position()[0]} {item.get_position()[1]} {item.get_position()[2]} {item.get_depth_item()} {item.get_width_item()} {item.get_height_item()} {item.get_item_id()}  ")
+        dimensions=item.get_dimension()
+        file.write(f"\n{item.get_position()[0]} {item.get_position()[1]} {item.get_position()[2]} {dimensions[0]} {dimensions[1]} {dimensions[2]} {item.get_item_id()}")
 
 file.close()

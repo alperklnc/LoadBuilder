@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using LoadBuilder.FileReading;
 using LoadBuilder.Helpers;
@@ -23,9 +24,42 @@ namespace LoadBuilder
         
         public static List<string> TimeOutOrders = new();
 
+        public static readonly Stopwatch Stopwatch = new();
+        
         public static void Main(string[] args)
         {
+            ReadData();
+            
+            var order = _previousOrders["5600128718"];
+            //var order = _previousOrders["5600163061"];
+
+            SolveByAdaptive(order);
+            SolveByBestfit(order);
+        }
+        
+        private static void SolveOrder(OrderInfo order)
+        {
+            if (OrderInfo.IsOrderValid(order))
+            {
+                var algorithm = AlgorithmHelper.FindAlgorithm(_items, _loadingTypes, order);
+
+                switch (algorithm)
+                {
+                    case AlgorithmType.adaptiveheuristic:
+                        SolveByAdaptive(order);
+                        break;
+                    case AlgorithmType.bestfit:
+                        SolveByBestfit(order);
+                        break;
+                }
+            }
+        }
+
+        private static void ReadData()
+        {
             _mainPath = Directory.GetParent(Environment.CurrentDirectory)?.Parent?.ToString();
+            
+            Stopwatch.Restart();
             
             XlsxReader xlsxReader = new XlsxReader(_mainPath);
             xlsxReader.ReadContainerFile(out _containers);
@@ -33,81 +67,14 @@ namespace LoadBuilder
             xlsxReader.ReadLoadingTypesFile(out _loadingTypes);
             xlsxReader.ReadTmFile(out _orderDetails);
             xlsxReader.ReadOrderFile(_orderDetails, out _previousOrders, out _newOrders);
-
-            var mixedOrders = FindMixOrdersIn(_previousOrders);
-            var order = mixedOrders[1];
-
-            order.WriteOrderToTxt($"{_mainPath}/Output", "order", _containers[order.ContainerType], _items, _loadingTypes);
-
-            if (OrderInfo.IsOrderValid(order))
-            {
-                var algorithm = AlgorithmHelper.FindAlgorithm(_items, _loadingTypes, order);
-
-                if (algorithm == AlgorithmType.adaptiveheuristic)
-                {
-                    Solve(order);
-                }
-                else if (algorithm == AlgorithmType.bestfit)
-                {
-                    AlgorithmHelper.RunMethod("bestfit", _mainPath, "order.txt");
-                    Visualizer.VisualizeOutput(_mainPath, "bestfit_output");
-                } 
-                else if (algorithm == AlgorithmType.genetic)
-                {
-                    AlgorithmHelper.RunMethod("genetic", _mainPath, "order.txt");
-                    Visualizer.VisualizeOutput(_mainPath, "genetic_output");
-                }  
-            }
-        }
-
-        private static OrderInfo CreateDummyOrder()
-        {
-            var dummyOrder = new OrderInfo();
-            dummyOrder.DocumentNumber = "DUMMY";
-            dummyOrder.Country = "Danimarka";
             
-            //dummyOrder.Country = "ABD";
-            dummyOrder.ContainerType = "40HC";
-            dummyOrder.AddItem("4410900046", 27); //65
-            dummyOrder.AddItem("6203202000", 27); //65
-            //dummyOrder.AddItem("6203202000", 27); //65
-            //dummyOrder.AddItem("7305530099", 36); //45
+            Console.WriteLine($"Total time to read data: {Stopwatch.ElapsedMilliseconds} ms");
+        }
+
+        private static void SolveByAdaptive(OrderInfo order, int counter = 1)
+        {
+            Stopwatch.Restart();
             
-            // dummyOrder.AddItem("7278440517", 27);
-            // dummyOrder.AddItem("7293442884", 1);
-            // dummyOrder.AddItem("7248846912", 31);
-            // dummyOrder.AddItem("7298547681", 1);
-
-            return dummyOrder;
-        }
-
-        private static void SolveAllOrders()
-        {
-            var counter = 1;
-            foreach (var _order in _previousOrders)
-            {
-                Console.WriteLine($"{counter} | Solving {_order.Key}");
-                Solve(_order.Value, counter);
-                counter++;
-            }
-        }
-
-        private static List<OrderInfo> FindMixOrdersIn(Dictionary<string, OrderInfo> previousOrders)
-        {
-            var previousMixedOrders = new List<OrderInfo>();
-            foreach (var order in previousOrders)
-            {
-                if (order.Value.IsMixOrder)
-                {
-                    previousMixedOrders.Add(order.Value);
-                }
-            }
-
-            return previousMixedOrders;
-        }
-
-        private static void Solve(OrderInfo order, int counter = 1)
-        {
             var itemsToPack = new List<Item>();
             var totalItemAmount = 0;
             var unloadingWithClamp = false;
@@ -119,7 +86,6 @@ namespace LoadBuilder
                     item.Quantity = orderedItem.Value;
                     var loadingType = _loadingTypes[order.Country][item.Type];
                     item.LoadingType = loadingType;
-                    Console.WriteLine($"Loading Type: {loadingType} for {item.Type} item - ID: {item.ItemId}");
                     item.SetRotationType(loadingType);
 
                     if (LoadingType.IsUnloadingWithClamp(loadingType))
@@ -149,15 +115,84 @@ namespace LoadBuilder
             var resultCounter = 1;
             foreach (var result in packingResults)
             {
-                result.PrintResults(false);
+                //result.PrintResults(false);
+
+                Dictionary<string, int> possibleItemAmounts = null;
+                
+                if (resultCounter == packingResults.Count)
+                {
+                    possibleItemAmounts = result.CalculatePossibleItemAmountsForRemainingContainerVolume(container);
+                }
 
                 var fileName = $"{counter}_output_{order.DocumentNumber}_{resultCounter}_{result.AlgorithmPackingResults[0].AlgorithmName}";
-                result.WriteResultsToTxt($"{_mainPath}/Output", fileName, result.AlgorithmPackingResults[0], order, container);
+                result.WriteResultsToTxt($"{_mainPath}/Output", fileName, result.AlgorithmPackingResults[0], order, container, possibleItemAmounts);
+                
+                Console.WriteLine($"Total time to solve problem: {Stopwatch.ElapsedMilliseconds} ms");
+                
+                Stopwatch.Restart();
                 
                 Visualizer.VisualizeOutput(_mainPath, fileName);
 
                 resultCounter++;
             }
+        }
+        
+        private static void SolveByBestfit(OrderInfo order)
+        {
+            order.WriteOrderToTxt($"{_mainPath}/Output", "order", _containers[order.ContainerType], _items, _loadingTypes);
+            
+            Stopwatch.Restart();
+            AlgorithmHelper.RunMethod("bestfit", _mainPath, "order.txt");
+            Console.WriteLine($"Total time to solve problem: {Stopwatch.ElapsedMilliseconds} ms");
+            
+            Stopwatch.Restart();
+            Visualizer.VisualizeOutput(_mainPath, "bestfit_output");
+        }
+        
+        private static OrderInfo CreateDummyOrder()
+        {
+            var dummyOrder = new OrderInfo();
+            dummyOrder.DocumentNumber = "5600157081";
+            dummyOrder.Country = "Rusya";
+            
+            dummyOrder.ContainerType = "40HC";
+            dummyOrder.AddItem("7756287601", 100);
+            dummyOrder.AddItem("7756287643", 2);
+            dummyOrder.AddItem("7763586734", 40);
+            dummyOrder.AddItem("7724088310", 20);
+            dummyOrder.AddItem("7757782983", 6);
+            dummyOrder.AddItem("7768288362", 15);
+            dummyOrder.AddItem("7768288402", 6);
+            dummyOrder.AddItem("7790586705", 52);
+            dummyOrder.AddItem("7768188306", 32);
+            dummyOrder.AddItem("7768288332", 85);
+
+            return dummyOrder;
+        }
+        
+        private static void SolveAllOrders()
+        {
+            var counter = 1;
+            foreach (var _order in _previousOrders)
+            {
+                Console.WriteLine($"{counter} | Solving {_order.Key}");
+                SolveByAdaptive(_order.Value, counter);
+                counter++;
+            }
+        }
+
+        private static List<OrderInfo> FindMixOrdersIn(Dictionary<string, OrderInfo> previousOrders)
+        {
+            var previousMixedOrders = new List<OrderInfo>();
+            foreach (var order in previousOrders)
+            {
+                if (order.Value.IsMixOrder)
+                {
+                    previousMixedOrders.Add(order.Value);
+                }
+            }
+
+            return previousMixedOrders;
         }
     }
 }

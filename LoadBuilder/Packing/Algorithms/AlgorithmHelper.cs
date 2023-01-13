@@ -28,7 +28,7 @@ namespace LoadBuilder.Packing.Algorithms
 
             if (order.OrderedItems.Count < 4)
             {
-                return itemTypes.All(n => n == itemTypes[0]) ? AlgorithmType.genetic : AlgorithmType.bestfit;
+                return itemTypes.All(n => n == itemTypes[0]) ? AlgorithmType.bestfit : AlgorithmType.bestfit;
             }
             
             return AlgorithmType.adaptiveheuristic;
@@ -50,9 +50,9 @@ namespace LoadBuilder.Packing.Algorithms
             p.StartInfo.UseShellExecute = false;
 
             p.Start();
-            Console.WriteLine("Process StandardOutput");
+            //Console.WriteLine("Process StandardOutput");
             Console.Write(p.StandardOutput.ReadToEnd());
-            Console.WriteLine("Process StandardError");
+            //Console.WriteLine("Process StandardError");
             Console.Write(p.StandardError.ReadToEnd());
             p.WaitForExit();
             p.Close();

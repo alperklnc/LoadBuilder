@@ -80,7 +80,7 @@ namespace LoadBuilder.FileReading
                 }
                 else
                 {
-                    Console.WriteLine($"Item {id} is already added to the dictionary!");
+                    //Console.WriteLine($"Item {id} is already added to the dictionary!");
                 }
             }
             
@@ -155,7 +155,7 @@ namespace LoadBuilder.FileReading
                     }
                     else
                     {
-                        Console.WriteLine($"Order {orderId} has already added to the dictionary.");
+                        //Console.WriteLine($"Order {orderId} has already added to the dictionary.");
                     }
                 }
             }
@@ -229,7 +229,7 @@ namespace LoadBuilder.FileReading
                     }
                     else
                     {
-                        Console.WriteLine($"Order {documentNumber} does not exist in the TM Report");
+                        //Console.WriteLine($"Order {documentNumber} does not exist in the TM Report");
                     }
                 }
                 else

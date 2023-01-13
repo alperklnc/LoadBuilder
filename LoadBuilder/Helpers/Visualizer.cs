@@ -21,9 +21,10 @@ namespace LoadBuilder.Helpers
             p.StartInfo.UseShellExecute = false;
 
             p.Start();
-            Console.WriteLine("Process StandardOutput");
+            Console.WriteLine($"Total time to visualize data: {Program.Stopwatch.ElapsedMilliseconds} ms");
+            //Console.WriteLine("Process StandardOutput");
             Console.Write(p.StandardOutput.ReadToEnd());
-            Console.WriteLine("Process StandardError");
+            //Console.WriteLine("Process StandardError");
             Console.Write(p.StandardError.ReadToEnd());
             p.WaitForExit();
             p.Close();

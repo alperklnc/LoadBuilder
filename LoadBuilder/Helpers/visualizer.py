@@ -44,14 +44,19 @@ for i in range(len(lines)):
         sizes.append(size)
 
         itemId = line[6]
+        
+        possibleItemAmount = 0
+        if len(line) > 7:
+            possibleItemAmount = line[7]
+            
         if itemId not in itemColorMap.keys():
             if len(colorList) > 0:
-                itemColorMap[itemId] = (colorList.pop(), 0)
+                itemColorMap[itemId] = (colorList.pop(), 0, possibleItemAmount)
             else:
-                itemColorMap[itemId] = ("r", 0)
+                itemColorMap[itemId] = ("r", 0, possibleItemAmount)
         
-        color,amount = itemColorMap[itemId]
-        itemColorMap[itemId] = (color, amount+1)
+        color,amount,possibleAmount = itemColorMap[itemId]
+        itemColorMap[itemId] = (color, amount+1, possibleAmount)
         colors.append(color)
 
 
@@ -110,16 +115,14 @@ to here
 """
 
 legend_patches = []
-# order_patch = mpatches.Patch(color="black", label=f'Order No: {orderId}')
-# legend_patches.append(order_patch)
-# destination_patch = mpatches.Patch(color="black", label=f'Destination: {destination}')
-# legend_patches.append(destination_patch)
-# container_patch = mpatches.Patch(color="black", label=f'Container Type: {containerType}')
-# legend_patches.append(container_patch)
 
 for itemId in itemColorMap.keys():
-    color, amount = itemColorMap[itemId]
+    color, amount, possibleItemAmount = itemColorMap[itemId]
     patch = mpatches.Patch(color=color, label=f'SKU: {itemId} - Amount: {amount}')
+    
+    if int(possibleItemAmount) > 0:
+        patch = mpatches.Patch(color=color, label=f'SKU: {itemId} - Amount: {amount} / Up To: {possibleItemAmount}')
+    
     legend_patches.append(patch)
 
 title = f'Packing Result\nOrder: {orderId}\nDestination: {destination}\nContainer Type: {containerType}\nUtilization: {utilization}%' 
