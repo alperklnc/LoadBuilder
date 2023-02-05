@@ -30,11 +30,16 @@ namespace LoadBuilder
         {
             ReadData();
             
-            var order = _previousOrders["5600128718"];
-            //var order = _previousOrders["5600163061"];
+            // _mainPath = Directory.GetParent(Environment.CurrentDirectory)?.Parent?.ToString();
+            // Visualizer.VisualizeOutput(_mainPath, "volume_4");
+            // return;
+            
+            //var order = _previousOrders["5600162932"];
+            var order = _previousOrders["5600164176"];
 
+            order.WriteOrderToTxt($"{_mainPath}/Output", "order", _containers[order.ContainerType], _items, _loadingTypes);
             SolveByAdaptive(order);
-            SolveByBestfit(order);
+            //SolveByBestfit(order);
         }
         
         private static void SolveOrder(OrderInfo order)
@@ -127,7 +132,7 @@ namespace LoadBuilder
                 var fileName = $"{counter}_output_{order.DocumentNumber}_{resultCounter}_{result.AlgorithmPackingResults[0].AlgorithmName}";
                 result.WriteResultsToTxt($"{_mainPath}/Output", fileName, result.AlgorithmPackingResults[0], order, container, possibleItemAmounts);
                 
-                Console.WriteLine($"Total time to solve problem: {Stopwatch.ElapsedMilliseconds} ms");
+                Console.WriteLine($"Total time to solve problem with Adaptive Heuristic: {Stopwatch.ElapsedMilliseconds} ms");
                 
                 Stopwatch.Restart();
                 
@@ -143,7 +148,7 @@ namespace LoadBuilder
             
             Stopwatch.Restart();
             AlgorithmHelper.RunMethod("bestfit", _mainPath, "order.txt");
-            Console.WriteLine($"Total time to solve problem: {Stopwatch.ElapsedMilliseconds} ms");
+            Console.WriteLine($"Total time to solve problem with Best Fit: {Stopwatch.ElapsedMilliseconds} ms");
             
             Stopwatch.Restart();
             Visualizer.VisualizeOutput(_mainPath, "bestfit_output");
@@ -156,16 +161,8 @@ namespace LoadBuilder
             dummyOrder.Country = "Rusya";
             
             dummyOrder.ContainerType = "40HC";
-            dummyOrder.AddItem("7756287601", 100);
-            dummyOrder.AddItem("7756287643", 2);
-            dummyOrder.AddItem("7763586734", 40);
-            dummyOrder.AddItem("7724088310", 20);
-            dummyOrder.AddItem("7757782983", 6);
-            dummyOrder.AddItem("7768288362", 15);
-            dummyOrder.AddItem("7768288402", 6);
-            dummyOrder.AddItem("7790586705", 52);
-            dummyOrder.AddItem("7768188306", 32);
-            dummyOrder.AddItem("7768288332", 85);
+            dummyOrder.AddItem("6202815000", 7);
+            dummyOrder.AddItem("6200702000", 2);
 
             return dummyOrder;
         }
